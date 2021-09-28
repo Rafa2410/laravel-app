@@ -94,48 +94,30 @@
             </div>
         </nav>
 
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-2" style="padding-left: 0;">
-                    <div class="sidebar-container">
-                        <div class="sidebar-logo">
-                            Project Name
+        <div class="wrapper container-fluid">
+            <div class="row" style="width: 100%;">
+                <div class="col-sm-2 d-none d-md-block" style="padding-left: 0;">
+                    <nav id="sidebar">
+                        <div class="sidebar-header">
+                            <h3>Bootstrap Sidebar</h3>
                         </div>
-                        <ul class="sidebar-navigation">
-                            <li class="header">Navigation</li>
+
+                        <ul class="list-unstyled components">
                             <li>
-                                <a href="#">
-                                    <i class="fa fa-home" aria-hidden="true"></i> Homepage
-                                </a>
+                                <a href="#">Portfolio</a>
                             </li>
                             <li>
-                                <a href="#">
-                                    <i class="fa fa-tachometer" aria-hidden="true"></i> Dashboard
-                                </a>
-                            </li>
-                            <li class="header">Another Menu</li>
-                            <li>
-                                <a href="#">
-                                    <i class="fa fa-users" aria-hidden="true"></i> Friends
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <i class="fa fa-cog" aria-hidden="true"></i> Settings
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <i class="fa fa-info-circle" aria-hidden="true"></i> Information
-                                </a>
+                                <a href="#">Contact</a>
                             </li>
                         </ul>
-                    </div>
+                    </nav>
                 </div>
-                <div class="col-10">
-                    <main class="py-4">
-                        @yield('content')
-                    </main>
+                <div class="col-sm-12 col-md-10">
+                    <div id="content">
+                        <main class="container py-4">
+                            @yield('content')
+                        </main>
+                    </div>
                 </div>
             </div>
         </div>
