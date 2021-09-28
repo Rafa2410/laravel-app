@@ -15,3 +15,5 @@ mix.js('resources/js/app.js', 'public/js')
     .vue({ version: 2 })
     .sass('resources/sass/app.scss', 'public/css')
     .sourceMaps();
+
+mix.css('resources/css/layouts/sidebar.css', 'css');

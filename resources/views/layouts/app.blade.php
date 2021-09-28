@@ -18,6 +18,9 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+    <!-- Sidebar styles -->
+    <link href="{{ asset('css/sidebar.css') }}" rel="stylesheet">
 </head>
 <body>
     <div id="app">
@@ -65,6 +68,9 @@
                                 </li>
                             @endif
                         @else
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('products.index') }}">{{ __('Products') }} </a>
+                            </li>
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }}
@@ -88,9 +94,51 @@
             </div>
         </nav>
 
-        <main class="py-4">
-            @yield('content')
-        </main>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-2" style="padding-left: 0;">
+                    <div class="sidebar-container">
+                        <div class="sidebar-logo">
+                            Project Name
+                        </div>
+                        <ul class="sidebar-navigation">
+                            <li class="header">Navigation</li>
+                            <li>
+                                <a href="#">
+                                    <i class="fa fa-home" aria-hidden="true"></i> Homepage
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="fa fa-tachometer" aria-hidden="true"></i> Dashboard
+                                </a>
+                            </li>
+                            <li class="header">Another Menu</li>
+                            <li>
+                                <a href="#">
+                                    <i class="fa fa-users" aria-hidden="true"></i> Friends
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="fa fa-cog" aria-hidden="true"></i> Settings
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="fa fa-info-circle" aria-hidden="true"></i> Information
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-10">
+                    <main class="py-4">
+                        @yield('content')
+                    </main>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 </html>
