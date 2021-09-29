@@ -55,22 +55,7 @@
                             </div>
                         </li>
                         <!-- Authentication Links -->
-                        @guest
-                            @if (Route::has('login'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                                </li>
-                            @endif
-
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                </li>
-                            @endif
-                        @else
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('products.index') }}">{{ __('Products') }} </a>
-                            </li>
+                        @auth
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }}
@@ -88,7 +73,7 @@
                                     </form>
                                 </div>
                             </li>
-                        @endguest
+                        @endauth
                     </ul>
                 </div>
             </div>
@@ -96,6 +81,7 @@
 
         <div class="wrapper container-fluid">
             <div class="row" style="width: 100%;">
+                @auth
                 <div class="col-sm-2 d-none d-md-block" style="padding-left: 0;">
                     <nav id="sidebar">
                         <div class="sidebar-header">
@@ -103,16 +89,27 @@
                         </div>
 
                         <ul class="list-unstyled components">
-                            <li>
-                                <a href="#">Portfolio</a>
-                            </li>
-                            <li>
-                                <a href="#">Contact</a>
-                            </li>
+                            @if (@Auth::user()->hasPermissionTo('product-list'))
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('products.index') }}">{{ __('Products') }} </a>
+                                </li>
+                            @endif
+                            @if (@Auth::user()->hasPermissionTo('role-list'))
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('roles.index') }}">{{ __('Manage Roles') }}</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('users.index') }}">{{ __('Manage Users') }}</a>
+                                </li>
+                            @endif
                         </ul>
                     </nav>
                 </div>
                 <div class="col-sm-12 col-md-10">
+                @endauth
+                @guest
+                <div class="col-sm-12">
+                @endguest
                     <div id="content">
                         <main class="container py-4">
                             @yield('content')
