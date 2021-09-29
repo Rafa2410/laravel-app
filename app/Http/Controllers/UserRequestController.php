@@ -13,6 +13,18 @@ class UserRequestController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    function __construct() {
+        $this->middleware('permission:request-list|request-create|request-edit|request-delete', ['only' => ['index','show']]);
+        $this->middleware('permission:request-create', ['only' => ['create','store']]);
+        $this->middleware('permission:request-edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:request-delete', ['only' => ['destroy']]);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index(Request $request)
     {
         $data = UserRequest::orderBy('id','DESC')->paginate()->where('user_id', Auth::id());

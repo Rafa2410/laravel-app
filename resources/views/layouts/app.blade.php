@@ -86,7 +86,7 @@
                         </div>
 
                         <ul class="list-unstyled components">
-                            @if (@Auth::user()->hasPermissionTo('product-list'))
+                            @if (@Auth::user()->hasPermissionTo('request-list') || @Auth::user()->hasRole('Admin'))
                                 <li class="{{ (request()->is('products*')) ? 'nav-item active' : 'nav-item' }}">
                                     <a class="nav-link" href="{{ route('products.index') }}">{{ __('Products') }} </a>
                                 </li>
@@ -94,7 +94,7 @@
                                     <a class="nav-link" href="{{ route('requests.index') }}">{{ __('Requests') }} </a>
                                 </li>
                             @endif
-                            @if (@Auth::user()->hasPermissionTo('role-list'))
+                            @if (@Auth::user()->hasPermissionTo('role-list') || @Auth::user()->hasRole('Admin'))
                                 <li class="{{ (request()->is('roles*')) ? 'nav-item active' : 'nav-item' }}">
                                     <a class="nav-link" href="{{ route('roles.index') }}">{{ __('Manage Roles') }}</a>
                                 </li>
