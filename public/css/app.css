@@ -11903,6 +11903,10 @@ a.article:hover {
     color: #fff !important;
 }
 
+.nav-item.active {
+    background: #575757;
+}
+
 
 /* ---------------------------------------------------
     CONTENT STYLE

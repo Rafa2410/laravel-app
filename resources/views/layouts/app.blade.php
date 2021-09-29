@@ -18,9 +18,6 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-
-    <!-- Sidebar styles -->
-    <link href="{{ asset('css/sidebar.css') }}" rel="stylesheet">
 </head>
 <body>
     <div id="app">
@@ -90,15 +87,15 @@
 
                         <ul class="list-unstyled components">
                             @if (@Auth::user()->hasPermissionTo('product-list'))
-                                <li class="nav-item">
+                                <li class="{{ (request()->is('products*')) ? 'nav-item active' : 'nav-item' }}">
                                     <a class="nav-link" href="{{ route('products.index') }}">{{ __('Products') }} </a>
                                 </li>
                             @endif
                             @if (@Auth::user()->hasPermissionTo('role-list'))
-                                <li class="nav-item">
+                                <li class="{{ (request()->is('roles*')) ? 'nav-item active' : 'nav-item' }}">
                                     <a class="nav-link" href="{{ route('roles.index') }}">{{ __('Manage Roles') }}</a>
                                 </li>
-                                <li class="nav-item">
+                                <li class="{{ (request()->is('users*')) ? 'nav-item active' : 'nav-item' }}">
                                     <a class="nav-link" href="{{ route('users.index') }}">{{ __('Manage Users') }}</a>
                                 </li>
                             @endif
