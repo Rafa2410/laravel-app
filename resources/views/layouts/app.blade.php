@@ -75,6 +75,7 @@
                 </div>
             </div>
         </nav>
+        <example-component></example-component>
 
         <div class="wrapper container-fluid">
             <div class="row" style="width: 100%;">

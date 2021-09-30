@@ -42,5 +42,7 @@
     "Role": "Rol",
     "Edit User": "Editar usuario",
     "Requests": "Peticiones",
-    "Create New Request": "Nueva petición"
+    "Create New Request": "Nueva petición",
+    "Company": "Empresa",
+    "Select Company": "Selecciona una empresa"
 }

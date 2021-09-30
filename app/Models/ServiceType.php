@@ -16,4 +16,9 @@ class ServiceType extends Model
     protected $fillable = [
         'name'
     ];
+
+    public function userRequests()
+    {
+        return $this->belongsToMany(UserRequest::class);
+    }
 }

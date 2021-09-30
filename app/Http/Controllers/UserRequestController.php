@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\UserRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Spatie\Permission\Models\Role;
+use App\Models\Company;
 
 class UserRequestController extends Controller
 {
@@ -39,7 +41,9 @@ class UserRequestController extends Controller
      */
     public function create()
     {
-        //
+        $roles = Role::pluck('name','name')->all();
+        $companies = Company::all();
+        return view('requests.create',compact('roles', 'companies'));
     }
 
     /**
