@@ -28,8 +28,5 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
  */
 
 const app = new Vue({
-    el: '#app',
-    components: {
-        'example-component': require('./components/ExampleComponent.vue')
-    }
+    el: '#app'
 });

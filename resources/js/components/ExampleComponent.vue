@@ -6,7 +6,16 @@
                     <div class="card-header">Example Component</div>
 
                     <div class="card-body">
-                        I'm an example component.
+                        <table>
+                            <tr>
+                                <th>Id</th>
+                                <th>Name</th>
+                            </tr>
+                            <tr v-for="company in companies" :key="company.id">
+                                <td>{{ company.id }}</td>
+                                <td>{{ company.name }}</td>
+                            </tr>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -16,8 +25,22 @@
 
 <script>
     export default {
-        mounted() {
-            console.log('Component mounted.')
+        data() {
+            return {
+                companies: {},
+            }
+        },
+        methods: {
+            getCompanies() {
+                axios.get('/requests/list')
+                    .then((response) => {
+                        console.log('Response',response)
+                        this.companies = response.data.companies;
+                    })
+            }
+        },
+        created() {
+            this.getCompanies()
         }
     }
 </script>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\UserRequest;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Role;
 use App\Models\Company;
@@ -32,6 +33,13 @@ class UserRequestController extends Controller
         $data = UserRequest::orderBy('id','DESC')->paginate()->where('user_id', Auth::id());
         return view('requests.index',compact('data'))
             ->with('i', ($request->input('page', 1) - 1) * 5);
+    }
+
+    public function list()
+    {
+        return response()->json([
+            'companies' => Company::all()
+        ], Response::HTTP_OK);
     }
 
     /**
