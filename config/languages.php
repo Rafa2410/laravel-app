@@ -3,7 +3,7 @@
 return [
     'en' => [
         'display' => 'English',
-        'flag-icon' => 'us'
+        'flag-icon' => 'gb'
     ],
     'es' => [
         'display' => 'Español',
