@@ -37,9 +37,8 @@ class UserRequestController extends Controller
 
     public function list()
     {
-        return response()->json([
-            'companies' => Company::all()
-        ], Response::HTTP_OK);
+        $companies = Company::all();
+        return response($companies, 200);
     }
 
     /**

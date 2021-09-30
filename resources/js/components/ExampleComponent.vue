@@ -32,10 +32,10 @@
         },
         methods: {
             getCompanies() {
-                axios.get('/requests/list')
+                axios.get('/list')
                     .then((response) => {
-                        console.log('Response',response)
-                        this.companies = response.data.companies;
+                        console.log('Response',response.data)
+                        this.companies = response.data;
                     })
             }
         },
