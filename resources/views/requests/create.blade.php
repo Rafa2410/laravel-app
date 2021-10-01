@@ -25,6 +25,8 @@
     </div>
 @endif
 
-<create-request-component></create-request-component>
+<create-request-component
+    csrf-token="{{ csrf_token() }}"
+></create-request-component>
 
 @endsection

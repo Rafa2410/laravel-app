@@ -25,6 +25,7 @@
         "vue-template-compiler": "^2.6.12"
     },
     "dependencies": {
-        "flag-icon-css": "^3.5.0"
+        "flag-icon-css": "^3.5.0",
+        "laravel-vue-lang": "^3.1.3"
     }
 }

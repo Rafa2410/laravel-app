@@ -3,6 +3,7 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <form action="#" class="form newtopic" @submit.prevent="checkForm">
+                    <input hidden name="_token" :value="csrfToken">
                     <p v-if="errors.length">
                         <b>Por favor, corrija el(los) siguiente(s) error(es):</b>
                         <ul>
@@ -10,7 +11,7 @@
                         </ul>
                     </p>
                     <div class="form-group">
-                        <label>Select Company:</label>
+                        <label>{{ __('Select Company') }}:</label>
                         <select class='form-control' v-model='company' @change='getPlants()'>
                             <option value='0' >Select company</option>
                             <option v-for='data in companies' :value='data.id'>{{ data.name }}</option>
@@ -71,7 +72,14 @@
                 e.preventDefault();
             }
         },
+        props: {
+            csrfToken: {
+                type: String,
+                required: true,
+            },
+        },
         created() {
+            console.log(window.default_locale);
             this.getCompanies()
         }
     }

@@ -18,6 +18,10 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+    <script>
+        window.default_locale = "{{ app()->getLocale() }}";
+    </script>
 </head>
 <body>
     <div id="app">
