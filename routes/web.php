@@ -24,7 +24,8 @@ Route::get('lang/{lang}', ['as' => 'lang.switch', 'uses' => 'App\Http\Controller
 
 Auth::routes();
 
-Route::get('list', [UserRequestController::class, 'list']);
+Route::get('list/companies', [UserRequestController::class, 'listCompanies']);
+Route::get('list/plants/{id}', [UserRequestController::class, 'listPlants']);
 
 Route::group(['middleware' => ['auth']], function() {
     Route::resource('roles', RoleController::class);

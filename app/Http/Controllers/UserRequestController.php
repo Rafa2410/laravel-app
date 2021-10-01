@@ -8,6 +8,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Role;
 use App\Models\Company;
+use App\Models\Plant;
 
 class UserRequestController extends Controller
 {
@@ -35,10 +36,22 @@ class UserRequestController extends Controller
             ->with('i', ($request->input('page', 1) - 1) * 5);
     }
 
-    public function list()
+    /**
+     * Return an array of companies
+     */
+    public function listCompanies()
     {
         $companies = Company::all();
         return response($companies, 200);
+    }
+
+    /**
+     * Return an array of plants
+     */
+    public function listPlants($id)
+    {
+        $plants = Plant::where('company_id', $id)->get();
+        return response($plants, 200);
     }
 
     /**
