@@ -27,6 +27,7 @@
 
 <create-request-component
     csrf-token="{{ csrf_token() }}"
+    requestor="{{ Auth::user()->name }}"
 ></create-request-component>
 
 @endsection

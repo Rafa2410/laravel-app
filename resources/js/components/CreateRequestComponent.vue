@@ -4,25 +4,75 @@
             <div class="col-md-8">
                 <form action="#" class="form newtopic" @submit.prevent="checkForm">
                     <input hidden name="_token" :value="csrfToken">
-                    <p v-if="errors.length">
-                        <b>Por favor, corrija el(los) siguiente(s) error(es):</b>
-                        <ul>
-                            <li v-for="error in errors">{{ error }}</li>
-                        </ul>
-                    </p>
                     <div class="form-group">
-                        <label>{{ __('Select Company') }}:</label>
-                        <select class='form-control' v-model='company' @change='getPlants()'>
-                            <option value='0' >Select company</option>
-                            <option v-for='data in companies' :value='data.id'>{{ data.name }}</option>
-                        </select>
+                        <div class="row">
+                            <label for="company">{{ __('Select Company') }}:</label>
+                            <select class='form-control col-lg-11' v-model='company' @change='getPlants()' id="company">
+                                <option value='0'>{{ __('Select Company') }}</option>
+                                <option v-for='data in companies' :value='data.id' :key="data.id">{{ data.name }}</option>
+                            </select>
+                        </div>
                     </div>
                     <div class="form-group">
-                        <label>Select Plant:</label>
-                        <select class='form-control' v-model='plant'>
-                            <option value='0'>Select Plant</option>
-                            <option v-for='data in plants' :value='data.id'>{{ data.name }}</option>
-                        </select>
+                        <div class="row">
+                            <label for="plant">{{ __('Select Plant') }}:</label>
+                            <select class='form-control col-lg-11' v-model='plant' @change='getCostCenter()' id="plant">
+                                <option value='0'>{{ __('Select Plant') }}</option>
+                                <option v-for='data in plants' :value='data.id' :key="data.id">{{ data.name }}</option>
+                            </select>
+                            <div :class="loadingPlants ? 'col-lg-1 text-center' : 'd-none'">
+                                <div class="spinner-border mt-2" style="width: 1rem; height: 1rem;" role="status">
+                                    <span class="sr-only">Loading...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <label for="costCenter">{{ __('Select Cost Center') }}:</label>
+                            <select class='form-control col-lg-11' v-model='costCenter' id="costCenter">
+                                <option value='0'>{{ __('Select Cost Center') }}</option>
+                                <option v-for='data in costCenters' :value='data.id' :key="data.id">{{ data.name }}</option>
+                            </select>
+                            <div :class="loadingCostCenter ? 'col-lg-1 text-center' : 'd-none'">
+                                <div class="spinner-border mt-2" style="width: 1rem; height: 1rem;" role="status">
+                                    <span class="sr-only">Loading...</span>
+                                </div>
+                            </div>    
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <label for="requestor">{{ __('Requestor') }}</label>
+                            <input type="text" id="requestor" class="form-control col-lg-11" :value="requestor">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <label for="costCenter">{{ __('Approvers') }}:</label>
+                            <ul class="list-group col-lg-11" style="padding-right: 0;">
+                                <li v-for='data in approvers' class="list-group-item" :key="data.id">{{ data.name }}</li>
+                            </ul>
+                            <div :class="loadingApprovers ? 'col-lg-1 text-center' : 'd-none'">
+                                <div class="spinner-border mt-2" style="width: 1rem; height: 1rem;" role="status">
+                                    <span class="sr-only">Loading...</span>
+                                </div>
+                            </div>    
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <label for="status">{{ __('Select Status') }}:</label>
+                            <select class='form-control col-lg-11' v-model='status' id="status">
+                                <option value='0'>{{ __('Select Status') }}</option>
+                                <option v-for='data in statuses' :value='data.id' :key="data.id">{{ __(data.name) }}</option>
+                            </select>
+                            <div :class="loadingStatus ? 'col-lg-1 text-center' : 'd-none'">
+                                <div class="spinner-border mt-2" style="width: 1rem; height: 1rem;" role="status">
+                                    <span class="sr-only">Loading...</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <button type="submit" class="btn btn-outline-secondary">Submit</button>
                 </form>
@@ -35,11 +85,19 @@
     export default {
         data() {
             return {
-                errors: [],
                 company: null,
                 plant: null,
                 companies: [],
-                plants: []
+                plants: [],
+                costCenter: null,
+                costCenters: [],
+                loadingPlants: false,
+                loadingCostCenter: false,
+                loadingApprovers: false,
+                approvers: [],
+                statuses: [],
+                status: null,
+                loadingStatus: false
             }
         },
         methods: {
@@ -50,25 +108,40 @@
                     })
             },
             getPlants() {
+                this.loadingPlants = true;
                 axios.get(`/list/plants/${this.company}`)
                     .then((response) => {
+                        this.loadingPlants = false;
                         this.plants = response.data;
+                    });
+                this.getApprovers();
+            },
+            getApprovers() {
+                this.loadingApprovers = true;
+                axios.get(`/list/approvers/${this.company}`)
+                    .then((response) => {
+                        this.loadingApprovers = false;
+                        this.approvers = response.data;
+                    });
+            },
+            getCostCenter() {
+                this.loadingCostCenter = true;
+                axios.get(`/list/costcenter/${this.plant}`)
+                    .then((response) => {
+                        this.loadingCostCenter = false;
+                        this.costCenters = response.data;
+                    });
+            },
+            getStatuses() {
+                this.loadingStatus = true;
+                axios.get('/list/status')
+                    .then((response) => {
+                        this.loadingStatus = false;
+                        this.statuses = response.data;
                     });
             },
             checkForm(e) {
-                if (this.company && this.plant) {
-                    console.log('OK');
-                    return true;
-                }
-
-                this.errors = [];
-                if (!this.company) {
-                    this.errors.push('La compañia es obligatoria!');
-                }
-                if (!this.plant) {
-                    this.errors.push('La planta es obligatoria!');
-                }
-
+                console.log('Submitted');
                 e.preventDefault();
             }
         },
@@ -77,10 +150,14 @@
                 type: String,
                 required: true,
             },
+            requestor: {
+                type: String,
+                required: true
+            }
         },
         created() {
-            console.log(window.default_locale);
-            this.getCompanies()
+            this.getCompanies();
+            this.getStatuses();
         }
     }
 </script>

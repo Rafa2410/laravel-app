@@ -44,5 +44,11 @@
     "Requests": "Requests",
     "Create New Request": "Create New Request",
     "Company": "Company",
-    "Select Company": "Select a company"
+    "Select Company": "Select a company",
+    "Select Cost Center": "Select Cost Center",
+    "Select Plant": "Select Plant",
+    "Requestor": "Requestor",
+    "Approvers": "Approvers",
+    "Select Status": "Select Status",
+    "Draft": "Draft"
 }

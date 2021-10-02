@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Role;
 use App\Models\Company;
 use App\Models\Plant;
+use App\Models\CostCenter;
+use App\Models\Approver;
+use App\Models\Status;
 
 class UserRequestController extends Controller
 {
@@ -48,10 +51,41 @@ class UserRequestController extends Controller
     /**
      * Return an array of plants
      */
-    public function listPlants($id)
+    public function listPlants(String $id)
     {
         $plants = Plant::where('company_id', $id)->get();
         return response($plants, 200);
+    }
+
+    /**
+     * Return an array of cost centers
+     */
+    public function listCostCenter(String $id)
+    {
+        $constCenters = CostCenter::where('plant_id', $id)->get();
+        return response($constCenters, 200);
+    }
+
+    /**
+     * Return an array of approvers
+     */
+    public function listApprovers(String $id)
+    {
+        $approvers = Approver::where('company_id', $id)->get();
+        $users = [];
+        foreach ($approvers as $approver) {
+            array_push($users, json_decode($approver->getUser($approver['user_id'])));
+        }
+        return response($users, 200);
+    }
+
+    /**
+     * Return an array of statuses
+     */
+    public function listStatuses()
+    {
+        $statuses = Status::all();
+        return response($statuses, 200);
     }
 
     /**

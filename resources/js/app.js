@@ -21,13 +21,13 @@ window.Vue = require('vue').default;
 
 import { Lang } from 'laravel-vue-lang';
 
-// Register the plugin
+// Register plugins
 Vue.use(Lang, {
 	locale: window.default_locale,
 	fallback: 'en'
 });
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+// Register components
 Vue.component('create-request-component', require('./components/CreateRequestComponent.vue').default);
 
 /**

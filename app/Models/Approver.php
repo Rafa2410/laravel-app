@@ -22,4 +22,11 @@ class Approver extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    /**
+     * Get user data
+     */
+    public function getUser($id) {
+        return User::findOrFail($id);
+    }
 }

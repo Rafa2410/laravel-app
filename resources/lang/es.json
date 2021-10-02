@@ -44,5 +44,11 @@
     "Requests": "Peticiones",
     "Create New Request": "Nueva petición",
     "Company": "Empresa",
-    "Select Company": "Selecciona una empresa"
+    "Select Company": "Selecciona una empresa",
+    "Select Cost Center": "Selecciona centro de coste",
+    "Select Plant": "Selecciona planta",
+    "Requestor": "Solicitante",
+    "Approvers": "Aprobadores",
+    "Select Status": "Seleccionar estado",
+    "Draft": "Borrador"
 }
