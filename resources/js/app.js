@@ -29,6 +29,7 @@ Vue.use(Lang, {
 
 // Register components
 Vue.component('create-request-component', require('./components/CreateRequestComponent.vue').default);
+Vue.component('edit-request-component', require('./components/EditRequestComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

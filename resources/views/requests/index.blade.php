@@ -15,7 +15,12 @@
     </div>
 
     @if ($message = Session::get('success'))
-        <div class="alert alert-success">
+        <script type="application/javascript">
+            setTimeout(() => {
+                document.getElementById('alert').style.display = 'none';
+            }, 2000);
+        </script>
+        <div class="alert alert-success" id="alert">
             <p>{{ $message }}</p>
         </div>
     @endif
@@ -34,27 +39,33 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($data as $key => $req)
-                <tr>
-                    <td>{{ ++$i }}</td>
-                    <td>{{ $req->getCompany($req->company_id)->name }}</td>
-                    <td>{{ $req->getPlant($req->plant_id)->name }}</td>
-                    <td>{{ $req->getCostCenter($req->cost_center_id)->name }}</td>
-                    <td>{{ __($req->getStatus($req->status_id)->name) }}</td>
-                    <td>{{ $req->start_date }}</td>
-                    <td>{{ $req->end_date }}</td>
-                    <td>
-                    @can('request-edit')
-                        <a class="btn btn-outline-primary" href="{{ route('requests.edit',$req->id) }}">{{ __('Edit') }}</a>
-                    @endcan
-                    @can('request-delete')
-                        {!! Form::open(['method' => 'DELETE','route' => ['requests.destroy', $req->id],'style'=>'display:inline']) !!}
-                            {!! Form::submit(__('Delete'), ['class' => 'btn btn-outline-danger']) !!}
-                        {!! Form::close() !!}
-                    @endcan
-                </td>
+            @if (count($data) === 0)
+                <tr class="text-center">
+                    <td colspan="8">{{ __('Not any request yet') }}</td>
                 </tr>
-            @endforeach
+            @else
+                @foreach ($data as $key => $req)
+                    <tr>
+                        <td>{{ $req->request_num }}</td>
+                        <td>{{ $req->getCompany($req->company_id)->name }}</td>
+                        <td>{{ $req->getPlant($req->plant_id)->name }}</td>
+                        <td>{{ $req->getCostCenter($req->cost_center_id)->name }}</td>
+                        <td>{{ __($req->getStatus($req->status_id)->name) }}</td>
+                        <td>{{ $req->start_date }}</td>
+                        <td>{{ $req->end_date }}</td>
+                        <td>
+                        @can('request-edit')
+                            <a class="btn btn-outline-primary" href="{{ route('requests.edit',$req->id) }}">{{ __('Edit') }}</a>
+                        @endcan
+                        @can('request-delete')
+                            {!! Form::open(['method' => 'DELETE','route' => ['requests.destroy', $req->id],'style'=>'display:inline']) !!}
+                                {!! Form::submit(__('Delete'), ['class' => 'btn btn-outline-danger']) !!}
+                            {!! Form::close() !!}
+                        @endcan
+                    </td>
+                    </tr>
+                @endforeach
+            @endif
         </tbody>
     </table>
 

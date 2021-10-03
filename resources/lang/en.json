@@ -84,5 +84,9 @@
     "Choose the type (s) of service (s).": "Choose the type (s) of service (s).",
     "Enter the number of persons.": "Enter the number of persons.",
     "Request Num": "Request Num.",
-    "Status": "Status"
+    "Status": "Status",
+    "Not any request yet": "Not any request yet",
+    "Edit Request": "Edit Request",
+    "New Request": "New Request",
+    "Request deleted successfully": "Request deleted successfully"
 }

@@ -85,5 +85,9 @@
     "Choose the type (s) of service (s).": "Elija el/los tipo(s) de servicio(s).",
     "Enter the number of persons.": "Introduzca el número de personas.",
     "Request Num": "Núm. Solicitud",
-    "Status": "Estado"
+    "Status": "Estado",
+    "Not any request yet": "Aún no hay ninguna solicitud",
+    "Edit Request": "Editar petición",
+    "New Request": "Nueva petición",
+    "Request deleted successfully": "Petición eliminada correctamente"
 }

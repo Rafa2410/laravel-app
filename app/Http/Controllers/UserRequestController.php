@@ -40,7 +40,11 @@ class UserRequestController extends Controller
      */
     public function index(Request $request)
     {
-        $data = UserRequest::orderBy('id','DESC')->paginate()->where('user_id', Auth::id());
+        if (@Auth::user()->hasRole('Admin')) {
+            $data = UserRequest::orderBy('id','DESC')->paginate()->all();
+        } else {
+            $data = UserRequest::orderBy('id','DESC')->paginate()->where('user_id', Auth::id());
+        }
         return view('requests.index',compact('data'))
             ->with('i', ($request->input('page', 1) - 1) * 5);
     }
@@ -154,10 +158,17 @@ class UserRequestController extends Controller
             $status = Status::where('name', 'Pending')->first();
         }
 
+        $num = UserRequest::count() + 1;
+        $seq = '';
+        for ($i=strlen(strval($num)); $i < 4; $i++) { 
+            $seq = $seq . '0';
+        }
+        $seq = now()->year . now()->month . $seq . $num;
+
         $query = [
             '_token' => $inputs['_token'],
-            'invoice_code' => 34,
-            'request_num' => 45,
+            'invoice_code' => $inputs['plant'].$inputs['costCenter'],
+            'request_num' => intval($seq),
             'company_id' => $inputs['company'],
             'plant_id' => $inputs['plant'],
             'cost_center_id' => $inputs['costCenter'],
@@ -207,21 +218,63 @@ class UserRequestController extends Controller
      * @param  \App\Models\UserRequest  $userRequest
      * @return \Illuminate\Http\Response
      */
-    public function edit(UserRequest $userRequest)
+    public function edit($id)
     {
-        //
+        $request = UserRequest::find($id);
+        $services = RequestHasService::where('user_request_id', $request->id)->get();
+
+        return view('requests.edit', compact('request', 'services'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\UserRequest  $userRequest
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, UserRequest $userRequest)
+    public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'company' => 'required',
+            'plant' => 'required',
+            'center' => 'required',
+            'contact' => 'required',
+            'reason' => 'required',
+            'start_date' => 'required',
+            'end_date' => 'required',
+            'room' => 'required',
+            'services' => 'required',
+            'canInterrup' => 'required',
+            'persons' => 'required'
+        ]);
+
+        $inputs = $request->all();
+
+        if ($inputs['type'] === 'Save') {
+            $status = Status::where('name', 'Draft')->first();
+        } else {
+            $status = Status::where('name', 'Pending')->first();
+        }
+
+        $query = [
+            '_token' => $inputs['_token'],
+            'company_id' => $inputs['company'],
+            'plant_id' => $inputs['plant'],
+            'cost_center_id' => $inputs['center'],
+            'user_id' => Auth::id(),
+            'status_id' => $status->id,
+            'contact_id' => $inputs['contact'],
+            'reason' => $inputs['reason'],
+            'start_date' => new DateTime($inputs['start_date']),
+            'end_date' => new DateTime($inputs['end_date']),
+            'room_id' => $inputs['room'],
+            'can_interrump' => $inputs['canInterrup'],
+            'content' => $inputs['content'],
+            'number_persons' => $inputs['persons']
+        ];
+
+        $request = UserRequest::find($inputs['id']);
+        $request->update($query);
     }
 
     /**
@@ -230,8 +283,10 @@ class UserRequestController extends Controller
      * @param  \App\Models\UserRequest  $userRequest
      * @return \Illuminate\Http\Response
      */
-    public function destroy(UserRequest $userRequest)
+    public function destroy($id)
     {
-        //
+        UserRequest::find($id)->delete();
+        return redirect()->route('requests.index')
+            ->with('success', __('Request deleted successfully'));
     }
 }

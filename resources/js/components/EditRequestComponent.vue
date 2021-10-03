@@ -4,6 +4,7 @@
             <div class="col-md-8">
                 <form action="#" method="POST">
                     <input hidden name="_token" :value="csrfToken">
+                    <input hidden name="id" :value="requestId">
                     <div class="row errors">
                         <p v-if="errors.length">
                             <b>{{ __('Please correct the following error (s): ') }}</b>
@@ -15,7 +16,7 @@
                     <div class="form-group">
                         <div class="row">
                             <label for="company" style="width: 100%;">{{ __('Company') }} *</label>
-                            <select class='form-control col-lg-11' v-model='company' @change='getPlants()' name="company" id="company" required>
+                            <select class='form-control col-lg-11' v-model='company' @change='resetRelations()' name="company" id="company" required>
                                 <option value='0'>{{ __('Select Company') }}</option>
                                 <option v-for='data in companies' :value='data.id' :key="data.id">{{ data.name }}</option>
                             </select>
@@ -24,7 +25,7 @@
                     <div class="form-group">
                         <div class="row">
                             <label for="plant" style="width: 100%;">{{ __('Plant') }} *</label>
-                            <select class='form-control col-lg-11' v-model='plant' @change='getCostCenter()' name="plant" id="plant" required>
+                            <select class='form-control col-lg-11' v-model='plant' @change='center="0";room="0"' name="plant" id="plant" required>
                                 <option value='0'>{{ __('Select Plant') }}</option>
                                 <option v-for='data in plants' :value='data.id' :key="data.id">{{ data.name }}</option>
                             </select>
@@ -38,7 +39,7 @@
                     <div class="form-group">
                         <div class="row">
                             <label for="costCenter">{{ __('Cost Center') }} *</label>
-                            <select class='form-control col-lg-11' v-model='costCenter' name="costCenter" id="costCenter" required>
+                            <select class='form-control col-lg-11' v-model='center' name="costCenter" id="costCenter" required>
                                 <option value='0'>{{ __('Select Cost Center') }}</option>
                                 <option v-for='data in costCenters' :value='data.id' :key="data.id">{{ data.name }}</option>
                             </select>
@@ -177,35 +178,36 @@
     export default {
         data() {
             return {
-                company: 0,
-                plant: 0,
                 companies: [],
+                company: this.companyValue,
                 plants: [],
-                costCenter: 0,
+                plant: this.plantValue,
                 costCenters: [],
+                center: this.costCenterValue,
                 loadingPlants: false,
                 loadingCostCenter: false,
                 loadingApprovers: false,
                 approvers: [],
-                contact: 0,
                 contacts: [],
+                contact: this.contactValue,
+                reason: this.reasonValue,
+                content: this.contentValue,
+                persons: this.personsValue,
                 loadingContacts: false,
-                reason: null,
                 start_date: null,
                 start_time: null,
                 end_date: null,
                 end_time: null,
-                room: 0,
                 rooms: [],
+                room: this.roomValue,
                 loadingRooms: false,
                 canInterrup: 'true',
                 services: [],
                 loadingServices: false,
-                content: null,
-                persons: 0,
                 requestObj: {},
-                request: ['company', 'plant', 'costCenter', 'contact', 'reason', 'room', 'content', 'persons', 'type'],
-                errors: []
+                request: ['company', 'plant', 'center', 'contact', 'reason', 'room', 'content', 'persons', 'type'],
+                errors: [],
+                setValues: false
             }
         },
         methods: {
@@ -222,7 +224,6 @@
                         this.loadingPlants = false;
                         this.plants = response.data;
                     });
-                this.getApprovers();
             },
             getApprovers() {
                 this.loadingApprovers = true;
@@ -239,7 +240,6 @@
                         this.loadingCostCenter = false;
                         this.costCenters = response.data;
                     });
-                this.getRooms();
             },
             getContacts() {
                 this.loadingContacts = true;
@@ -269,7 +269,8 @@
                 this.mountRequestObject();
                 if (this.checkForm()) {
                     this.requestObj.type = 'Save';
-                    axios.post(this.store, JSON.stringify(this.requestObj), {
+                    console.log('Envio', this.requestObj, this.errors);
+                    axios.put(this.update, JSON.stringify(this.requestObj), {
                         headers: {
                             'Content-Type': 'application/json',
                             'X-CSRF-TOKEN': this.csrfToken
@@ -285,7 +286,7 @@
                 this.mountRequestObject();
                 if (this.checkForm()) {
                     this.requestObj.type = 'Save and send';
-                    axios.post(this.store, JSON.stringify(this.requestObj), {
+                    axios.put(this.update, JSON.stringify(this.requestObj), {
                         headers: {
                             'Content-Type': 'application/json',
                             'X-CSRF-TOKEN': this.csrfToken
@@ -299,6 +300,7 @@
             },
             mountRequestObject() {
                 this.requestObj._token = this.csrfToken;
+                this.requestObj.id = this.requestId;
                 this.requestObj.canInterrup = (this.canInterrup === 'true') ? true : false;
                 this.requestObj.start_date = `${this.start_date} ${this.start_time}:00`;
                 this.requestObj.end_date = `${this.end_date} ${this.end_time}:00`;
@@ -314,8 +316,8 @@
                 });
             },
             checkForm() {
-                if (this.company && this.company !== '0' && this.plant && this.plant !== '0' && this.costCenter 
-                    && this.costCenter !== '0' && this.contact && this.contact !== '0' && this.reason && this.start_date
+                if (this.company && this.company !== '0' && this.plant && this.plant !== '0' && this.center 
+                    && this.center !== '0' && this.contact && this.contact !== '0' && this.reason && this.start_date
                     && this.start_time && this.end_date && this.end_time && this.room && this.room !== '0'
                     && this.requestObj.services.length > 0 && this.persons !== '0') {
                     return true;
@@ -329,7 +331,7 @@
                 if (!this.plant || this.plant === '0') {
                     this.errors.push('Choose a plant.');
                 }
-                if (!this.costCenter || this.costCenter === '0') {
+                if (!this.center || this.center === '0') {
                     this.errors.push('Choose a cost center.');
                 }
                 if (!this.contact || this.contact === '0') {
@@ -357,6 +359,29 @@
                 window.scrollTo(0,0);
 
                 return false;
+            },
+            setFormValues() {
+                // Set services checkbox
+                const selServices = JSON.parse(this.selectedServices);
+                selServices.forEach(service => {
+                    if (document.getElementById(`service_${service.service_types_id}`)) {
+                        document.getElementById(`service_${service.service_types_id}`).checked = true;
+                        this.setValues = true;
+                    }
+                });
+                // Set interrump radios
+                (this.interrump === '0') ? this.canInterrup = 'false' : null;
+                if (!this.start_date) {
+                    this.start_date = this.start.split(' ')[0];
+                    this.start_time = this.start.split(' ')[1].replace(':00', '');
+                    this.end_date = this.end.split(' ')[0];
+                    this.end_time = this.end.split(' ')[1].replace(':00', '');
+                }
+            },
+            resetRelations() {
+                this.plant = 0;
+                this.center = 0;
+                this.room = 0;
             }
         },
         props: {
@@ -372,15 +397,74 @@
                 type: String,
                 required: true
             },
-            store: {
+            companyValue: {
+                type: String,
+                required: true
+            },
+            plantValue: {
+                type: String,
+                required: true
+            },
+            costCenterValue: {
+                type: String,
+                required: true
+            },
+            reasonValue: {
+                type: String,
+                required: true
+            },
+            contactValue: {
+                type: String,
+                required: true
+            },
+            roomValue: {
+                type: String,
+                required: true
+            },
+            contentValue: {
+                type: String,
+                required: true
+            },
+            personsValue: {
+                type: String,
+                required: true
+            },
+            interrump: {
+                type: String,
+                required: true
+            },
+            selectedServices: {
+                type: String,
+                required: true
+            },
+            start: {
+                type: String,
+                required: true
+            },
+            end: {
+                type: String,
+                required: true
+            },
+            requestId: {
+                type: String,
+                required: true
+            },
+            update: {
                 type: String,
                 required: true
             }
         },
         created() {
             this.getCompanies();
-            this.getContacts();
+            this.getCostCenter();
             this.getServices();
+            this.getContacts();
+            this.getPlants();
+            this.getApprovers();
+            this.getRooms();
+        },
+        updated() {
+            if (!this.setValues) this.setFormValues();
         }
     }
 </script>
