@@ -106,3 +106,7 @@ a.article:hover {
         display: none;
     }
 }
+
+.errors {
+    color: #d63429;
+}

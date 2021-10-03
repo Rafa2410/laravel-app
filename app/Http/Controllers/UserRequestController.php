@@ -15,6 +15,7 @@ use App\Models\Status;
 use App\Models\User;
 use App\Models\Room;
 use App\Models\ServiceType;
+use DateTime;
 
 class UserRequestController extends Controller
 {
@@ -129,7 +130,48 @@ class UserRequestController extends Controller
      */
     public function store(Request $request)
     {
-        var_dump($request->all());
+        $this->validate($request, [
+            'company' => 'required',
+            'plant' => 'required',
+            'costCenter' => 'required',
+            'contact' => 'required',
+            'reason' => 'required',
+            'start_date' => 'required',
+            'end_date' => 'required',
+            'room' => 'required',
+            'services' => 'required',
+            'canInterrup' => 'required',
+            'persons' => 'required'
+        ]);
+
+        $inputs = $request->all();
+
+        if ($inputs['type'] === 'Save') {
+            $status = Status::where('name', 'Draft')->first();
+        } else {
+            $status = Status::where('name', 'Pending')->first();
+        }
+
+        $query = [
+            '_token' => $inputs['_token'],
+            'invoice_code' => 34,
+            'request_num' => 45,
+            'company_id' => $inputs['company'],
+            'plant_id' => $inputs['plant'],
+            'cost_center_id' => $inputs['costCenter'],
+            'user_id' => Auth::id(),
+            'status_id' => $status->id,
+            'contact_id' => $inputs['contact'],
+            'reason' => $inputs['reason'],
+            'start_date' => new DateTime($inputs['start_date']),
+            'end_date' => new DateTime($inputs['end_date']),
+            'room_id' => $inputs['room'],
+            'can_interrump' => $inputs['canInterrup'],
+            'content' => $inputs['content'],
+            'number_persons' => $inputs['persons']
+        ];
+
+        UserRequest::create($query);
     }
 
     /**

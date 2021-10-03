@@ -17,7 +17,16 @@ class UserRequest extends Model
     protected $fillable = [
         'invoice_code',
         'request_num',
+        'company_id',
+        'plant_id',
+        'cost_center_id',
+        'user_id',
+        'status_id',
+        'contact_id',
         'reason',
+        'start_date',
+        'end_date',
+        'room_id',
         'can_interrump',
         'content',
         'number_persons'

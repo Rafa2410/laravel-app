@@ -28,7 +28,7 @@ class CreateUserRequestsTable extends Migration
             $table->datetime('end_date');
             $table->unsignedBigInteger('room_id');
             $table->boolean('can_interrump');
-            $table->string('content');
+            $table->string('content')->nullable();
             $table->bigInteger('number_persons');
             $table->timestamps();
 

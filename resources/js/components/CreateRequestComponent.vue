@@ -4,6 +4,14 @@
             <div class="col-md-8">
                 <form action="#" method="POST">
                     <input hidden name="_token" :value="csrfToken">
+                    <div class="row errors">
+                        <p v-if="errors.length">
+                            <b>{{ __('Please correct the following error (s): ') }}</b>
+                            <ul>
+                                <li v-for="error in errors" :key="error">{{ __(error) }}</li>
+                            </ul>
+                        </p>
+                    </div>
                     <div class="form-group">
                         <div class="row">
                             <label for="company" style="width: 100%;">{{ __('Company') }} *</label>
@@ -114,13 +122,13 @@
                         <div class="row">
                             <label for="rooms" style="width: 100%;">{{ __('Can it be interrupted?') }} *</label>
                             <div class="form-check col-lg-6">
-                                <input class="form-check-input" type="radio" name="interrupRadios" id="yes" v-model="canInterrup">
+                                <input class="form-check-input" type="radio" name="interrupRadios" id="yes" value="true" v-model="canInterrup">
                                 <label class="form-check-label" for="yes">
                                     {{ __('Yes') }}
                                 </label>
                             </div>
                             <div class="form-check col-lg-6">
-                                <input class="form-check-input" type="radio" name="interrupRadios" id="no" v-model="cantInterrup">
+                                <input class="form-check-input" type="radio" name="interrupRadios" id="no" value="false" v-model="canInterrup">
                                 <label class="form-check-label" for="no">
                                     {{ __('No') }}
                                 </label>
@@ -145,7 +153,7 @@
                     <div class="form-group">
                         <div class="row">
                             <label for="persons">{{ __('Number of persons') }} *</label>
-                            <input type="number" id="persons" name="persons" class="form-control col-lg-11" :value="persons" required>
+                            <input type="number" id="persons" name="persons" class="form-control col-lg-11" v-model="persons" required>
                         </div>
                     </div>
                     <div class="row">
@@ -190,14 +198,14 @@
                 room: 0,
                 rooms: [],
                 loadingRooms: false,
-                canInterrup: false,
-                cantInterrup: false,
+                canInterrup: 'true',
                 services: [],
                 loadingServices: false,
                 content: null,
                 persons: 0,
                 requestObj: {},
-                request: ['company', 'plant', 'costCenter', 'contact', 'reason', 'start_date', 'start_time', 'end_date', 'end_time', 'room', 'content', 'persons', 'type']
+                request: ['company', 'plant', 'costCenter', 'contact', 'reason', 'room', 'content', 'persons', 'type'],
+                errors: []
             }
         },
         methods: {
@@ -259,19 +267,41 @@
             },
             save(e) {
                 this.mountRequestObject();
-                this.requestObj.type = 'Save';
-                console.log('Request obj', this.requestObj);
+                if (this.checkForm()) {
+                    this.requestObj.type = 'Save';
+                    axios.post(this.store, JSON.stringify(this.requestObj), {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': this.csrfToken
+                        }
+                    }).then(response => window.location.href = '/requests')
+                    .catch(error => {
+                        console.error("There was an error!", error);
+                    });
+                }
                 e.preventDefault();
             },
             saveAndSend(e) {
                 this.mountRequestObject();
-                this.requestObj.type = 'Save and send';
-                console.log('Request object', this.requestObj);
+                if (this.checkForm()) {
+                    this.requestObj.type = 'Save and send';
+                    axios.post(this.store, JSON.stringify(this.requestObj), {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': this.csrfToken
+                        }
+                    }).then(response => window.location.href = '/requests')
+                    .catch(error => {
+                        console.error("There was an error!", error);
+                    });
+                }
                 e.preventDefault();
             },
             mountRequestObject() {
                 this.requestObj._token = this.csrfToken;
-                this.requestObj.canInterrup = (this.canInterrup) ? true : false;
+                this.requestObj.canInterrup = (this.canInterrup === 'true') ? true : false;
+                this.requestObj.start_date = `${this.start_date} ${this.start_time}:00`;
+                this.requestObj.end_date = `${this.end_date} ${this.end_time}:00`;
                 this.requestObj.services = [];
                 this.services.forEach(elem => {
                     if (document.getElementById(`service_${elem.id}`).checked) {
@@ -281,6 +311,49 @@
                 this.request.forEach(elem => {
                     this.requestObj[elem] = this.$data[elem];
                 });
+            },
+            checkForm() {
+                if (this.company && this.plant && this.costCenter && this.contact && this.reason && this.start_date && this.start_time 
+                    && this.end_date && this.end_time && this.room && this.requestObj.services.length > 0 && this.persons) {
+                    return true;
+                }
+
+                this.errors = [];
+
+                if (!this.company) {
+                    this.errors.push('Choose a company.');
+                }
+                if (!this.plant) {
+                    this.errors.push('Choose a plant.');
+                }
+                if (!this.costCenter) {
+                    this.errors.push('Choose a cost center.');
+                }
+                if (!this.contact) {
+                    this.errors.push('Choose a contact.');
+                }
+                if (!this.reason) {
+                    this.errors.push('Write a reason.');
+                }
+                if (!this.start_date || !this.start_time) {
+                    this.errors.push('Define the start day and time.');
+                }
+                if (!this.end_date || !this.end_time) {
+                    this.errors.push('Define the end day and time.');
+                }
+                if (!this.room) {
+                    this.errors.push('Choose a room.');
+                }
+                if (!this.requestObj.services.length === 0) {
+                    this.errors.push('Choose the type (s) of service (s).');
+                }
+                if (!this.persons) {
+                    this.errors.push('Enter the number of persons.');
+                }
+                
+                window.scrollTo(0,0);
+
+                return false;
             }
         },
         props: {

@@ -71,5 +71,16 @@
     "Content": "Content",
     "Number of persons": "Number of persons",
     "Submit and send": "Submit and send",
-    "Cancel": "Cancel"
+    "Cancel": "Cancel",
+    "Please correct the following error (s): ": "Please correct the following error (s): ",
+    "Choose a company.": "Choose a company.",
+    "Choose a plant.": "Choose a plant.",
+    "Choose a cost center.": "Choose a cost center.",
+    "Choose a contact.": "Choose a contact.",
+    "Write a reason.": "Write a reason.",
+    "Define the start day and time.": "Define the start day and time.",
+    "Define the end day and time.": "Define the end day and time.",
+    "Choose a room.": "Choose a room.",
+    "Choose the type (s) of service (s).": "Choose the type (s) of service (s).",
+    "Enter the number of persons.": "Enter the number of persons."
 }
