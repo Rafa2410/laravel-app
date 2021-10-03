@@ -15,6 +15,8 @@ use App\Models\Status;
 use App\Models\User;
 use App\Models\Room;
 use App\Models\ServiceType;
+use App\Models\RequestHasService;
+use App\Models\RequestHasApprover;
 use DateTime;
 
 class UserRequestController extends Controller
@@ -171,7 +173,21 @@ class UserRequestController extends Controller
             'number_persons' => $inputs['persons']
         ];
 
-        UserRequest::create($query);
+        $request = UserRequest::create($query);
+
+        foreach ($inputs['services'] as $service) {
+            RequestHasService::create([
+                'user_request_id' => $request->id,
+                'service_types_id' => $service
+            ]);
+        }
+
+        foreach ($inputs['approvers'] as $approver) {
+            RequestHasApprover::create([
+                'user_request_id' => $request->id,
+                'user_id' => $approver['id']
+            ]);
+        }
     }
 
     /**

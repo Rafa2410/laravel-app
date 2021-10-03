@@ -123,7 +123,38 @@ class UserRequest extends Model
         return $this->belongsToMany(ServiceType::class);
     }
 
+    /**
+     * Get user
+     */
     public function getUser($id) {
         return User::findOrFail($id);
+    }
+
+    /**
+     * Get company
+     */
+    public function getCompany($id) {
+        return Company::findOrFail($id);
+    }
+
+    /**
+     * Get plant
+     */
+    public function getPlant($id) {
+        return Plant::findOrFail($id);
+    }
+
+    /**
+     * Get cost center
+     */
+    public function getCostCenter($id) {
+        return CostCenter::findOrFail($id);
+    }
+
+    /**
+     * Get status
+     */
+    public function getStatus($id) {
+        return Status::findOrFail($id);
     }
 }

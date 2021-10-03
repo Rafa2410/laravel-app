@@ -23,17 +23,36 @@
     <table class="table table-hover">
         <thead>
             <tr>
-                <th>{{ __('Id') }}</th>
-                <th>{{ __('Name') }}</th>
-                <th>{{ __('Name') }} 2</th>
+                <th>{{ __('Request Num') }}</th>
+                <th>{{ __('Company') }}</th>
+                <th>{{ __('Plant') }}</th>
+                <th>{{ __('Cost Center') }}</th>
+                <th>{{ __('Status') }}</th>
+                <th>{{ __('Start Date') }}</th>
+                <th>{{ __('End Date') }}</th>
+                <th>{{ __('Action') }}</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($data as $key => $req)
                 <tr>
                     <td>{{ ++$i }}</td>
-                    <td>{{ $req->user_id }}</td>
-                    <td>{{ $req->getUser($req->user_id)->name }}</td>
+                    <td>{{ $req->getCompany($req->company_id)->name }}</td>
+                    <td>{{ $req->getPlant($req->plant_id)->name }}</td>
+                    <td>{{ $req->getCostCenter($req->cost_center_id)->name }}</td>
+                    <td>{{ __($req->getStatus($req->status_id)->name) }}</td>
+                    <td>{{ $req->start_date }}</td>
+                    <td>{{ $req->end_date }}</td>
+                    <td>
+                    @can('request-edit')
+                        <a class="btn btn-outline-primary" href="{{ route('requests.edit',$req->id) }}">{{ __('Edit') }}</a>
+                    @endcan
+                    @can('request-delete')
+                        {!! Form::open(['method' => 'DELETE','route' => ['requests.destroy', $req->id],'style'=>'display:inline']) !!}
+                            {!! Form::submit(__('Delete'), ['class' => 'btn btn-outline-danger']) !!}
+                        {!! Form::close() !!}
+                    @endcan
+                </td>
                 </tr>
             @endforeach
         </tbody>

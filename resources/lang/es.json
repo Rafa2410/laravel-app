@@ -83,5 +83,7 @@
     "Define the end day and time.": "Defina el día y la hora de fin.",
     "Choose a room.": "Elija una sala.",
     "Choose the type (s) of service (s).": "Elija el/los tipo(s) de servicio(s).",
-    "Enter the number of persons.": "Introduzca el número de personas."
+    "Enter the number of persons.": "Introduzca el número de personas.",
+    "Request Num": "Núm. Solicitud",
+    "Status": "Estado"
 }

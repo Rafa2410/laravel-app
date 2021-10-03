@@ -302,6 +302,7 @@
                 this.requestObj.canInterrup = (this.canInterrup === 'true') ? true : false;
                 this.requestObj.start_date = `${this.start_date} ${this.start_time}:00`;
                 this.requestObj.end_date = `${this.end_date} ${this.end_time}:00`;
+                this.requestObj.approvers = this.approvers;
                 this.requestObj.services = [];
                 this.services.forEach(elem => {
                     if (document.getElementById(`service_${elem.id}`).checked) {
