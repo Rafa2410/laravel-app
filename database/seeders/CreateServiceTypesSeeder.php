@@ -17,9 +17,8 @@ class CreateServiceTypesSeeder extends Seeder
         $types = [
             'Breakfast',
             'Launcheons and Barbecues',
-            'Conventions, Tradeshows and Conferences',
-            'Board Meeting',
-            'Product Launches'
+            'Coffees',
+            'Foods'
         ];
 
         foreach ($types as $type) {

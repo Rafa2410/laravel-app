@@ -91,9 +91,6 @@
 
                         <ul class="list-unstyled components">
                             @if (@Auth::user()->hasPermissionTo('request-list') || @Auth::user()->hasRole('Admin'))
-                                <li class="{{ (request()->is('products*')) ? 'nav-item active' : 'nav-item' }}">
-                                    <a class="nav-link" href="{{ route('products.index') }}">{{ __('Products') }} </a>
-                                </li>
                                 <li class="{{ (request()->is('requests*')) ? 'nav-item active' : 'nav-item' }}">
                                     <a class="nav-link" href="{{ route('requests.index') }}">{{ __('Requests') }} </a>
                                 </li>

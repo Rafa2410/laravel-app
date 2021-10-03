@@ -11841,7 +11841,7 @@ h3 {
     background: #3f3f3f;
     color: #fff;
     transition: all 0.3s;
-    height: 100vh;
+    height: 100%;
 }
 
 #sidebar a,

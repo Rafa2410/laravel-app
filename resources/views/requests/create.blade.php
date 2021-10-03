@@ -28,6 +28,8 @@
 <create-request-component
     csrf-token="{{ csrf_token() }}"
     requestor="{{ Auth::user()->name }}"
+    back="{{ route('requests.index') }}"
+    store="{{ route('requests.store') }}"
 ></create-request-component>
 
 @endsection

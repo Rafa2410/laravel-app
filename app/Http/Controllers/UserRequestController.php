@@ -12,6 +12,9 @@ use App\Models\Plant;
 use App\Models\CostCenter;
 use App\Models\Approver;
 use App\Models\Status;
+use App\Models\User;
+use App\Models\Room;
+use App\Models\ServiceType;
 
 class UserRequestController extends Controller
 {
@@ -80,12 +83,30 @@ class UserRequestController extends Controller
     }
 
     /**
-     * Return an array of statuses
+     * Return an array of users
      */
-    public function listStatuses()
+    public function listContacts()
     {
-        $statuses = Status::all();
-        return response($statuses, 200);
+        $users = User::all();
+        return response($users, 200);
+    }
+
+    /**
+     * Return an array of rooms
+     */
+    public function listRooms(String $id)
+    {
+        $rooms = Room::where('plant_id', $id)->get();
+        return response($rooms, 200);
+    }
+
+    /**
+     * Return an array of services
+     */
+    public function listServices()
+    {
+        $services = ServiceType::all();
+        return response($services, 200);
     }
 
     /**
@@ -108,7 +129,7 @@ class UserRequestController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        var_dump($request->all());
     }
 
     /**

@@ -28,11 +28,12 @@ Route::get('list/companies', [UserRequestController::class, 'listCompanies']);
 Route::get('list/plants/{id}', [UserRequestController::class, 'listPlants']);
 Route::get('list/costcenter/{id}', [UserRequestController::class, 'listCostCenter']);
 Route::get('list/approvers/{id}', [UserRequestController::class, 'listApprovers']);
-Route::get('list/status', [UserRequestController::class, 'listStatuses']);
+Route::get('list/contacts', [UserRequestController::class, 'listContacts']);
+Route::get('list/rooms/{id}', [UserRequestController::class, 'listRooms']);
+Route::get('list/services', [UserRequestController::class, 'listServices']);
 
 Route::group(['middleware' => ['auth']], function() {
     Route::resource('roles', RoleController::class);
     Route::resource('users', UserController::class);
-    Route::resource('products', ProductController::class);
     Route::resource('requests', UserRequestController::class);
 });
