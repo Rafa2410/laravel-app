@@ -11942,3 +11942,11 @@ a.article:hover {
 tr.cancelled {
     background-color: #e1e1e1;
 }
+
+.form-check-input[disabled] ~ .form-check-label, .form-check-input:disabled ~ .form-check-label {
+    color: #212529 !important;
+}
+
+.form-control:disabled, .form-control[readonly] {
+    background-color: #fff !important;
+}

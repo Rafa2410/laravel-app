@@ -93,5 +93,13 @@
     "New Request": "Nueva petición",
     "Request deleted successfully": "Petición eliminada correctamente",
     "Caution": "Atención!",
-    "You are going to cancel your request, do you want to continue?": "Estás a punto de cancelar tu solicitud, ¿quieres continuar?"
+    "You are going to cancel the request, do you want to continue?": "Estás a punto de cancelar la solicitud, ¿quieres continuar?",
+    "You are going to reject the request, do you want to continue?": "Estás a punto de rechazar la solicitud, ¿quieres continuar?",
+    "You are going to approve the request, do you want to continue?": "Estás a punto de aprobar la solicitud, ¿quieres continuar?",
+    "Manage": "Gestionar",
+    "Manage Request": "Gestionar petición",
+    "Approve": "Aprobar",
+    "Reject": "Rechazar",
+    "Approved": "Aprobada",
+    "Rejected": "Rechazada"
 }

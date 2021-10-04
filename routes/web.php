@@ -33,6 +33,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('list/rooms/{id}', [UserRequestController::class, 'listRooms']);
     Route::get('list/services', [UserRequestController::class, 'listServices']);
     Route::put('state/request/{id}', [UserRequestController::class, 'changeState']);
+    Route::get('manage/request/{id}', [UserRequestController::class, 'manage'])->name('manage-request');
 
     Route::resource('roles', RoleController::class);
     Route::resource('users', UserController::class);

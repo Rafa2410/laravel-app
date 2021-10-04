@@ -3,7 +3,9 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <form action="#" method="POST">
+                    <!-- Hidden input csfr token -->
                     <input hidden name="_token" :value="csrfToken">
+                    <!-- Errors -->
                     <div class="row errors">
                         <p v-if="errors.length">
                             <b>{{ __('Please correct the following error (s): ') }}</b>
@@ -12,6 +14,7 @@
                             </ul>
                         </p>
                     </div>
+                    <!-- Company -->
                     <div class="form-group">
                         <div class="row">
                             <label for="company" style="width: 100%;">{{ __('Company') }} *</label>
@@ -21,6 +24,7 @@
                             </select>
                         </div>
                     </div>
+                    <!-- Plant -->
                     <div class="form-group">
                         <div class="row">
                             <label for="plant" style="width: 100%;">{{ __('Plant') }} *</label>
@@ -35,6 +39,7 @@
                             </div>
                         </div>
                     </div>
+                    <!-- Cost center -->
                     <div class="form-group">
                         <div class="row">
                             <label for="costCenter">{{ __('Cost Center') }} *</label>
@@ -49,12 +54,14 @@
                             </div>    
                         </div>
                     </div>
+                    <!-- Requestor -->
                     <div class="form-group">
                         <div class="row">
                             <label for="requestor">{{ __('Requestor') }}</label>
                             <input type="text" id="requestor" class="form-control col-lg-11" :value="requestor" readonly>
                         </div>
                     </div>
+                    <!-- Approvers -->
                     <div class="form-group">
                         <div class="row">
                             <label for="approvers">{{ __('Approvers') }} </label>
@@ -68,6 +75,7 @@
                             </div>    
                         </div>
                     </div>
+                    <!-- Contact -->
                     <div class="form-group">
                         <div class="row">
                             <label for="contacts">{{ __('Contact Name') }} *</label>
@@ -82,12 +90,14 @@
                             </div>    
                         </div>
                     </div>
+                    <!-- Reason -->
                     <div class="form-group">
                         <div class="row">
                             <label for="reason" style="width: 100%;">{{ __('Reason') }} *</label>
                             <textarea name="reason" id="reason" cols="30" rows="6" v-model='reason' class="form-control col-lg-11" required></textarea>
                         </div>
                     </div>
+                    <!-- Start date -->
                     <div class="form-group">
                         <div class="row">
                             <label for="start_date" style="width: 47%;">{{ __('Start Date') }} *</label>
@@ -96,6 +106,7 @@
                             <input type="time" name="start_time" class="form-control" id="start_time" v-model='start_time' style="width: 45%;" required>
                         </div>
                     </div>
+                    <!-- End date -->
                     <div class="form-group">
                         <div class="row">
                             <label for="end_date" style="width: 47%;">{{ __('End Date') }} *</label>
@@ -104,6 +115,7 @@
                             <input type="time" name="end_time" class="form-control" id="end_time" v-model='end_time' style="width: 45%;" required>
                         </div>
                     </div>
+                    <!-- Room -->
                     <div class="form-group">
                         <div class="row">
                             <label for="rooms" style="width: 100%;">{{ __('Room') }} *</label>
@@ -118,6 +130,7 @@
                             </div>    
                         </div>
                     </div>
+                    <!-- Interrup -->
                     <div class="form-group">
                         <div class="row">
                             <label style="width: 100%;">{{ __('Can it be interrupted?') }} *</label>
@@ -135,6 +148,7 @@
                             </div>
                         </div>
                     </div>
+                    <!-- Services -->
                     <div class="form-group">
                         <div class="row">
                             <label for="services" style="width: 100%;">{{ __('Service Type') }} *</label>
@@ -144,18 +158,21 @@
                             </div>
                         </div>
                     </div>
+                    <!-- Content -->
                     <div class="form-group">
                         <div class="row">
                             <label for="request_content" style="width: 100%;">{{ __('Content') }}</label>
                             <input type="text" id="request_content" name="content" class="form-control col-lg-11" :value="content">
                         </div>
                     </div>
+                    <!-- Persons -->
                     <div class="form-group">
                         <div class="row">
                             <label for="persons">{{ __('Number of persons') }} *</label>
                             <input type="number" id="persons" name="persons" class="form-control col-lg-11" v-model="persons" required>
                         </div>
                     </div>
+                    <!-- Form buttons -->
                     <div class="row">
                         <div class="col-lg-3 text-left">
                             <button type="button" class="btn btn-outline-secondary" @click="save($event)">{{ __('Submit') }}</button>

@@ -93,5 +93,13 @@
     "New Request": "New Request",
     "Request deleted successfully": "Request deleted successfully",
     "Caution": "Caution!",
-    "You are going to cancel your request, do you want to continue?": "You are going to cancel your request, do you want to continue?"
+    "You are going to cancel the request, do you want to continue?": "You are going to cancel the request, do you want to continue?",
+    "You are going to reject the request, do you want to continue?": "You are going to reject the request, do you want to continue?",
+    "You are going to approve the request, do you want to continue?": "You are going to approve the request, do you want to continue?",
+    "Manage": "Manage",
+    "Manage Request": "Manage Request",
+    "Approve": "Approve",
+    "Reject": "Reject",
+    "Approved": "Approved",
+    "Rejected": "Rejected"
 }

@@ -43,9 +43,20 @@ class UserRequestController extends Controller
         $user = User::find(@Auth::user()->id);
         if ($user->hasRole('Admin')) {
             $data = UserRequest::orderBy('id','DESC')->paginate()->all();
+        } else if ($user->hasRole('Approver')) {
+            $allRequests = RequestHasApprover::where('user_id', $user->id)->get();
+            $approverRequests = [];
+            foreach ($allRequests as $req) {
+                array_push($approverRequests, $req->user_request_id);
+            }
+            $data = UserRequest::orderBy('id','DESC')->paginate()
+                    ->where('status_id', '>', 1)
+                    ->whereIn('id', $approverRequests);
         } else {
-            $data = UserRequest::orderBy('id','DESC')->paginate()->where('user_id', Auth::id());
+            $data = UserRequest::orderBy('id','DESC')->paginate()
+                    ->where('user_id', Auth::id());
         }
+
         return view('requests.index',compact('data'))
             ->with('i', ($request->input('page', 1) - 1) * 5);
     }
@@ -318,5 +329,16 @@ class UserRequestController extends Controller
         UserRequest::find($id)->delete();
         return redirect()->route('requests.index')
             ->with('success', __('Request deleted successfully'));
+    }
+
+    /**
+     * Get user request and open approver view to manage request
+     */
+    public function manage(Request $request, $id)
+    {
+        $request = UserRequest::find($id);
+        $services = RequestHasService::where('user_request_id', $request->id)->get();
+
+        return view('requests.manage', compact('request', 'services'));
     }
 }

@@ -45,7 +45,7 @@
                 </tr>
             @else
                 @foreach ($data as $key => $req)
-                    <tr class="{{ $req->getStatus($req->status_id)->name === 'Cancelled' ? 'cancelled' : '' }}">
+                    <tr class="{{ $req->getStatus($req->status_id)->name !== 'Draft' ? 'cancelled' : '' }}">
                         <td>{{ $req->request_num }}</td>
                         <td>{{ $req->getCompany($req->company_id)->name }}</td>
                         <td>{{ $req->getPlant($req->plant_id)->name }}</td>
@@ -55,8 +55,10 @@
                         <td>{{ $req->end_date }}</td>
                         <td>
                         @can('request-edit')
-                            @if ($req->getStatus($req->status_id)->name !== 'Cancelled')
-                            <a class="btn btn-outline-primary" href="{{ route('requests.edit',$req->id) }}">{{ __('Edit') }}</a>
+                            @if ($req->getStatus($req->status_id)->name !== 'Draft' && !@Auth::user()->hasRole('Approver'))
+                                <a class="btn btn-outline-primary" href="{{ route('requests.edit',$req->id) }}">{{ __('Edit') }}</a>
+                            @elseif ($req->getStatus($req->status_id)->name === 'Pending' && @Auth::user()->hasRole('Approver'))
+                                <a class="btn btn-outline-primary" href="{{ route('manage-request',$req->id) }}">{{ __('Manage') }}</a>
                             @endif
                         @endcan
                         @can('request-delete')
