@@ -110,3 +110,7 @@ a.article:hover {
 .errors {
     color: #d63429;
 }
+
+tr.cancelled {
+    background-color: #e1e1e1;
+}

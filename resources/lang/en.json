@@ -51,6 +51,9 @@
     "Plant": "Plant",
     "Requestor": "Requestor",
     "Approvers": "Approvers",
+    "Draft": "Draft",
+    "Pending": "Pending",
+    "Cancelled": "Cancelled",
     "Select Contact Name": "Select Contact Name",
     "Contact Name": "Contact Name",
     "Reason": "Reason",
@@ -88,5 +91,7 @@
     "Not any request yet": "There are no requests yet",
     "Edit Request": "Edit Request",
     "New Request": "New Request",
-    "Request deleted successfully": "Request deleted successfully"
+    "Request deleted successfully": "Request deleted successfully",
+    "Caution": "Caution!",
+    "You are going to cancel your request, do you want to continue?": "You are going to cancel your request, do you want to continue?"
 }

@@ -43,6 +43,7 @@
     selected-services="{{ $services }}"
     start="{{ $request->start_date }}"
     end="{{ $request->end_date }}"
+    status="{{ $request->getStatus($request->status_id)->name }}"
 ></edit-request-component>
 
 @endsection

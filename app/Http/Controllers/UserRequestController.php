@@ -153,11 +153,7 @@ class UserRequestController extends Controller
 
         $inputs = $request->all();
 
-        if ($inputs['type'] === 'Save') {
-            $status = Status::where('name', 'Draft')->first();
-        } else {
-            $status = Status::where('name', 'Pending')->first();
-        }
+        $status = Status::where('name', $inputs['type'])->first();
 
         $num = UserRequest::count() + 1;
         $seq = '';
@@ -185,18 +181,18 @@ class UserRequestController extends Controller
             'number_persons' => $inputs['persons']
         ];
 
-        $request = UserRequest::create($query);
+        $userRequest = UserRequest::create($query);
 
         foreach ($inputs['services'] as $service) {
             RequestHasService::create([
-                'user_request_id' => $request->id,
+                'user_request_id' => $userRequest->id,
                 'service_types_id' => $service
             ]);
         }
 
         foreach ($inputs['approvers'] as $approver) {
             RequestHasApprover::create([
-                'user_request_id' => $request->id,
+                'user_request_id' => $userRequest->id,
                 'user_id' => $approver['id']
             ]);
         }
@@ -250,12 +246,8 @@ class UserRequestController extends Controller
         ]);
 
         $inputs = $request->all();
-
-        if ($inputs['type'] === 'Save') {
-            $status = Status::where('name', 'Draft')->first();
-        } else {
-            $status = Status::where('name', 'Pending')->first();
-        }
+        
+        $status = Status::where('name', $inputs['type'])->first();
 
         $query = [
             '_token' => $inputs['_token'],
@@ -274,19 +266,19 @@ class UserRequestController extends Controller
             'number_persons' => $inputs['persons']
         ];
 
-        $request = UserRequest::find($inputs['id']);
-        $request->update($query);
+        $userRequest = UserRequest::find($inputs['id']);
+        $userRequest->update($query);
 
-        RequestHasService::where('user_request_id', $request->id)->delete();
+        RequestHasService::where('user_request_id', $userRequest->id)->delete();
 
         foreach ($inputs['services'] as $service) {
             RequestHasService::create([
-                'user_request_id' => $request->id,
+                'user_request_id' => $userRequest->id,
                 'service_types_id' => $service
             ]);
         }
 
-        RequestHasApprover::where('user_request_id', $request->id)->delete();
+        RequestHasApprover::where('user_request_id', $userRequest->id)->delete();
 
         foreach ($inputs['approvers'] as $approver) {
             RequestHasApprover::create([
@@ -294,6 +286,25 @@ class UserRequestController extends Controller
                 'user_id' => $approver['id']
             ]);
         }
+    }
+
+    /**
+     * Update state to a request
+     */
+    public function changeState(Request $request, $id) {
+        $this->validate($request, [
+            'type' => 'required',
+        ]);
+
+        $inputs = $request->all();
+        $status = Status::where('name', $inputs['type'])->first();
+
+        $query = [
+            'status_id' => $status->id,
+        ];
+
+        $userRequest = UserRequest::find($id);
+        $userRequest->update($query);
     }
 
     /**

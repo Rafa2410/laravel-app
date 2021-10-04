@@ -268,7 +268,7 @@
             save(e) {
                 this.mountRequestObject();
                 if (this.checkForm()) {
-                    this.requestObj.type = 'Save';
+                    this.requestObj.type = 'Draft';
                     axios.post(this.store, JSON.stringify(this.requestObj), {
                         headers: {
                             'Content-Type': 'application/json',
@@ -284,7 +284,7 @@
             saveAndSend(e) {
                 this.mountRequestObject();
                 if (this.checkForm()) {
-                    this.requestObj.type = 'Save and send';
+                    this.requestObj.type = 'Pending';
                     axios.post(this.store, JSON.stringify(this.requestObj), {
                         headers: {
                             'Content-Type': 'application/json',

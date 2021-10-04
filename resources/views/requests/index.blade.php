@@ -45,7 +45,7 @@
                 </tr>
             @else
                 @foreach ($data as $key => $req)
-                    <tr>
+                    <tr class="{{ $req->getStatus($req->status_id)->name === 'Cancelled' ? 'cancelled' : '' }}">
                         <td>{{ $req->request_num }}</td>
                         <td>{{ $req->getCompany($req->company_id)->name }}</td>
                         <td>{{ $req->getPlant($req->plant_id)->name }}</td>
@@ -55,7 +55,9 @@
                         <td>{{ $req->end_date }}</td>
                         <td>
                         @can('request-edit')
+                            @if ($req->getStatus($req->status_id)->name !== 'Cancelled')
                             <a class="btn btn-outline-primary" href="{{ route('requests.edit',$req->id) }}">{{ __('Edit') }}</a>
+                            @endif
                         @endcan
                         @can('request-delete')
                             {!! Form::open(['method' => 'DELETE','route' => ['requests.destroy', $req->id],'style'=>'display:inline']) !!}

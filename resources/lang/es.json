@@ -52,6 +52,8 @@
     "Requestor": "Solicitante",
     "Approvers": "Aprobadores",
     "Draft": "Borrador",
+    "Pending": "Pendiente",
+    "Cancelled": "Cancelada",
     "Select Contact Name": "Seleccionar persona de contacto",
     "Contact Name": "Persona de contacto",
     "Reason": "Motivo",
@@ -89,5 +91,7 @@
     "Not any request yet": "Todavía no hay ningúna solicitud",
     "Edit Request": "Editar petición",
     "New Request": "Nueva petición",
-    "Request deleted successfully": "Petición eliminada correctamente"
+    "Request deleted successfully": "Petición eliminada correctamente",
+    "Caution": "Atención!",
+    "You are going to cancel your request, do you want to continue?": "Estás a punto de cancelar tu solicitud, ¿quieres continuar?"
 }

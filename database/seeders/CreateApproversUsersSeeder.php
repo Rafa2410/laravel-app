@@ -6,6 +6,8 @@ use Illuminate\Database\Seeder;
 use App\Models\User;
 use App\Models\Company;
 use App\Models\Approver;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class CreateApproversUsersSeeder extends Seeder
 {
@@ -67,6 +69,15 @@ class CreateApproversUsersSeeder extends Seeder
             ]
         ];
 
+        $role = Role::create(['name' => 'Approver']);
+        $permissions = Permission::all();
+        $approverPermissions = [];
+        foreach ($permissions as $val) {
+            if ($val->name === 'request-list' || $val->name === 'request-edit') {
+                array_push($approverPermissions, $val->id);
+            }
+        }
+        $role->syncPermissions($approverPermissions);
         foreach ($companyApprovers as $key => $approvers) {
             $company = Company::where('name', $key)->first();
             foreach ($approvers as $approver) {
@@ -79,6 +90,7 @@ class CreateApproversUsersSeeder extends Seeder
                     'company_id' => $company->id,
                     'user_id' => $user->id
                 ]);
+                $user->assignRole([$role->id]);
             }
         }
     }

@@ -165,10 +165,31 @@
                             <button type="button" class="btn btn-outline-primary" @click="saveAndSend($event)">{{ __('Submit and send') }}</button>
                         </div>
                         <div class="col-lg-3 text-right">
-                            <a class="btn btn-outline-danger" :href="back">{{ __('Cancel') }}</a>
+                            <a class="btn btn-outline-danger" :href="back" v-if="status === 'Draft'">{{ __('Cancel') }}</a>
+                            <a class="btn btn-outline-danger" v-else data-toggle="modal" data-target="#cancelRequestModal">{{ __('Cancel') }}</a>
                         </div>
                     </div>
                 </form>
+            </div>
+            <!-- Modal -->
+            <div class="modal fade" id="cancelRequestModal" tabindex="-1" role="dialog" aria-labelledby="cancelRequestModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="cancelRequestModalLabel">{{ __('Caution') }}</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            {{ __('You are going to cancel your request, do you want to continue?') }}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('No') }}</button>
+                            <button type="button" class="btn btn-danger" @click="cancelRequest($event)">{{ __('Yes') }}</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -268,7 +289,7 @@
             save(e) {
                 this.mountRequestObject();
                 if (this.checkForm()) {
-                    this.requestObj.type = 'Save';
+                    this.requestObj.type = 'Draft';
                     axios.put(this.update, JSON.stringify(this.requestObj), {
                         headers: {
                             'Content-Type': 'application/json',
@@ -284,7 +305,7 @@
             saveAndSend(e) {
                 this.mountRequestObject();
                 if (this.checkForm()) {
-                    this.requestObj.type = 'Save and send';
+                    this.requestObj.type = 'Pending';
                     axios.put(this.update, JSON.stringify(this.requestObj), {
                         headers: {
                             'Content-Type': 'application/json',
@@ -295,6 +316,19 @@
                         console.error("There was an error!", error);
                     });
                 }
+                e.preventDefault();
+            },
+            cancelRequest(e) {
+                this.requestObj.type = 'Cancelled';
+                axios.put(`/state/request/${this.requestId}`, JSON.stringify(this.requestObj), {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': this.csrfToken
+                    }
+                }).then(response => window.location.href = '/requests')
+                .catch(error => {
+                    console.error("There was an error!", error);
+                });
                 e.preventDefault();
             },
             mountRequestObject() {
@@ -460,6 +494,10 @@
                 required: true
             },
             update: {
+                type: String,
+                required: true
+            },
+            status: {
                 type: String,
                 required: true
             }
