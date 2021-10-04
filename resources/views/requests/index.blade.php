@@ -28,13 +28,13 @@
     <table class="table table-hover">
         <thead>
             <tr>
-                <th>{{ __('Request Num') }}</th>
                 <th>{{ __('Company') }}</th>
-                <th>{{ __('Plant') }}</th>
-                <th>{{ __('Cost Center') }}</th>
+                <th>{{ __('Request Num') }}</th>
+                <th>{{ __('Requestor') }}</th>
+                <th>{{ __('Room') }}</th>
                 <th>{{ __('Status') }}</th>
-                <th>{{ __('Start Date') }}</th>
-                <th>{{ __('End Date') }}</th>
+                <th>{{ __('Date') }}</th>
+                <th>{{ __('Services') }}</th>
                 <th>{{ __('Action') }}</th>
             </tr>
         </thead>
@@ -45,17 +45,17 @@
                 </tr>
             @else
                 @foreach ($data as $key => $req)
-                    <tr class="{{ $req->getStatus($req->status_id)->name !== 'Draft' ? 'cancelled' : '' }}">
-                        <td>{{ $req->request_num }}</td>
+                    <tr class="{{ $req->getStatus($req->status_id)->name !== 'Draft' ? 'managed' : '' }}">
                         <td>{{ $req->getCompany($req->company_id)->name }}</td>
-                        <td>{{ $req->getPlant($req->plant_id)->name }}</td>
-                        <td>{{ $req->getCostCenter($req->cost_center_id)->name }}</td>
+                        <td>{{ $req->request_num }}</td>
+                        <td>{{ $req->getUser($req->user_id)->name }}</td>
+                        <td>{{ $req->getRoom($req->room_id)->name }}</td>
                         <td>{{ __($req->getStatus($req->status_id)->name) }}</td>
                         <td>{{ $req->start_date }}</td>
-                        <td>{{ $req->end_date }}</td>
-                        <td>
+                        <td class="truncate">{{ $req->getServices($req->id) }}</td>
+                        <td style="max-width: 200px;">
                         @can('request-edit')
-                            @if ($req->getStatus($req->status_id)->name !== 'Draft' && !@Auth::user()->hasRole('Approver'))
+                            @if ($req->getStatus($req->status_id)->name === 'Draft' && !@Auth::user()->hasRole('Approver'))
                                 <a class="btn btn-outline-primary" href="{{ route('requests.edit',$req->id) }}">{{ __('Edit') }}</a>
                             @elseif ($req->getStatus($req->status_id)->name === 'Pending' && @Auth::user()->hasRole('Approver'))
                                 <a class="btn btn-outline-primary" href="{{ route('manage-request',$req->id) }}">{{ __('Manage') }}</a>

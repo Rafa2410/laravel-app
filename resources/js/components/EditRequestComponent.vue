@@ -366,10 +366,10 @@
                 });
             },
             checkForm() {
-                if (this.company && this.company !== '0' && this.plant && this.plant !== '0' && this.center 
-                    && this.center !== '0' && this.contact && this.contact !== '0' && this.reason && this.start_date
+                if (this.company && this.company !== '0' && this.plant && this.plant !== '0' && this.costCenter 
+                    && this.costCenter !== '0' && this.contact && this.contact !== '0' && this.reason && this.start_date
                     && this.start_time && this.end_date && this.end_time && this.room && this.room !== '0'
-                    && this.requestObj.services.length > 0 && this.persons !== '0') {
+                    && this.requestObj.services.length > 0 && this.persons && typeof this.persons === 'number') {
                     return true;
                 }
 
@@ -381,7 +381,7 @@
                 if (!this.plant || this.plant === '0') {
                     this.errors.push('Choose a plant.');
                 }
-                if (!this.center || this.center === '0') {
+                if (!this.costCenter || this.costCenter === '0') {
                     this.errors.push('Choose a cost center.');
                 }
                 if (!this.contact || this.contact === '0') {
@@ -399,11 +399,14 @@
                 if (!this.room || this.room === '0') {
                     this.errors.push('Choose a room.');
                 }
-                if (!this.requestObj.services.length === 0) {
+                if (this.requestObj.services.length === 0) {
                     this.errors.push('Choose the type (s) of service (s).');
                 }
-                if (!this.persons || this.persons === '0') {
+                if (!this.persons) {
                     this.errors.push('Enter the number of persons.');
+                }
+                if (this.persons && !typeof this.persons !== 'number') {
+                    this.errors.push('Enter a valid number');
                 }
                 
                 window.scrollTo(0,0);

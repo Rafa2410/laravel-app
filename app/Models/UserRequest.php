@@ -145,6 +145,13 @@ class UserRequest extends Model
     }
 
     /**
+     * Get room
+     */
+    public function getRoom($id) {
+        return Room::findOrFail($id);
+    }
+
+    /**
      * Get cost center
      */
     public function getCostCenter($id) {
@@ -156,5 +163,28 @@ class UserRequest extends Model
      */
     public function getStatus($id) {
         return Status::findOrFail($id);
+    }
+
+    /**
+     * Get services
+     */
+    public function getServices($id) {
+        $reqServices = RequestHasService::where('user_request_id', $id)->get();
+        $servicesId = [];
+        foreach ($reqServices as $serv) {
+            array_push($servicesId, $serv->service_types_id);
+        }
+        $servicesQuery = ServiceType::whereIn('id', $servicesId)->get();
+        $services = '';
+        $numItems = count($servicesQuery);
+        $i = 0;
+        foreach ($servicesQuery as $service) {
+            if(++$i < $numItems) {
+                $services = $services . $service->name . ', ';
+            } else {
+                $services = $services . $service->name;
+            }
+        }
+        return $services;
     }
 }
