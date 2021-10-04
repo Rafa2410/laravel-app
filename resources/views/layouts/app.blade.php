@@ -27,9 +27,6 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
-                </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -85,8 +82,8 @@
                 @auth
                 <div class="col-sm-2 d-none d-md-block" style="padding-left: 0;">
                     <nav id="sidebar">
-                        <div class="sidebar-header">
-                            <h3>Bootstrap Sidebar</h3>
+                        <div class="sidebar-header" style="padding: 0;">
+                            <img src="https://www.ficosa.com/wp-content/uploads/2017/01/Ficosa-Logo_Horizontal.jpg" style="max-width:100%;" alt="Ficosa logo">
                         </div>
 
                         <ul class="list-unstyled components">

@@ -33,6 +33,6 @@ class RequestApproved extends Mailable
      */
     public function build()
     {
-        return $this->subject($this->subject)->view('mails.request_approved');
+        return $this->subject($this->subject)->markdown('mails.request_approved');
     }
 }

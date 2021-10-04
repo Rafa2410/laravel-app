@@ -7,12 +7,14 @@
     <title>{{ __('Request approved') }}</title>
 </head>
 <body>
-    <ul>
+    <ul style="text-align: center; list-style: none;">
         <li>{{ __('Date/Hour') }}: {{ $userRequest->start_date }}</li>
         <li>{{ __('Room') }}: {{ $userRequest->getRoom($userRequest->room_id)->name }}</li>
         <li>{{ __('Service Type') }}: {{ $userRequest->getServices($userRequest->id) }}</li>
-        <li>{{ __('Number of persons') }}: {{ $userRequest->persons }}</li>
+        <li>{{ __('Number of persons') }}: {{ $userRequest->number_persons }}</li>
     </ul>
-    <a href="{{ route('requests.show', $userRequest->id) }}">{{ __('Details') }}</a>
+    @component('mail::button', ['url' => route('requests.show', $userRequest->id)])
+        {{ __('Details') }}
+    @endcomponent
 </body>
 </html>

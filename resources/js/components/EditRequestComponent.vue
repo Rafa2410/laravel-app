@@ -18,6 +18,10 @@
                             </ul>
                         </p>
                     </div>
+                    <!-- Alert -->
+                    <div class="alert alert-success d-none" id="edit-alert">
+                      <p>{{ __('Request edited successfully') }}</p>
+                    </div>
                     <!-- Company -->
                     <div class="form-group">
                         <div class="row">
@@ -316,7 +320,7 @@
                             'Content-Type': 'application/json',
                             'X-CSRF-TOKEN': this.csrfToken
                         }
-                    }).then(response => window.location.href = '/requests')
+                    }).then(response => this.showAlertAndRedirect())
                     .catch(error => {
                         console.error("There was an error!", error);
                     });
@@ -333,7 +337,7 @@
                             'Content-Type': 'application/json',
                             'X-CSRF-TOKEN': this.csrfToken
                         }
-                    }).then(response => window.location.href = '/requests')
+                    }).then(response => this.showAlertAndRedirect())
                     .catch(error => {
                         console.error("There was an error!", error);
                     });
@@ -348,7 +352,7 @@
                         'Content-Type': 'application/json',
                         'X-CSRF-TOKEN': this.csrfToken
                     }
-                }).then(response => window.location.href = '/requests')
+                }).then(response => this.showAlertAndRedirect())
                 .catch(error => {
                     console.error("There was an error!", error);
                 });
@@ -372,10 +376,10 @@
                 });
             },
             checkForm() {
-                if (this.company && this.company !== '0' && this.plant && this.plant !== '0' && this.costCenter 
-                    && this.costCenter !== '0' && this.contact && this.contact !== '0' && this.reason && this.start_date
+                if (this.company && this.company !== '0' && this.plant && this.plant !== '0' && this.center 
+                    && this.center !== '0' && this.contact && this.contact !== '0' && this.reason && this.start_date
                     && this.start_time && this.end_date && this.end_time && this.room && this.room !== '0'
-                    && this.requestObj.services.length > 0 && this.persons && typeof this.persons === 'number') {
+                    && this.requestObj.services.length > 0 && this.persons) {
                     return true;
                 }
 
@@ -387,7 +391,7 @@
                 if (!this.plant || this.plant === '0') {
                     this.errors.push('Choose a plant.');
                 }
-                if (!this.costCenter || this.costCenter === '0') {
+                if (!this.center || this.center === '0') {
                     this.errors.push('Choose a cost center.');
                 }
                 if (!this.contact || this.contact === '0') {
@@ -410,9 +414,6 @@
                 }
                 if (!this.persons) {
                     this.errors.push('Enter the number of persons.');
-                }
-                if (this.persons && !typeof this.persons !== 'number') {
-                    this.errors.push('Enter a valid number');
                 }
                 
                 window.scrollTo(0,0);
@@ -456,6 +457,13 @@
             hideModalAndShowLoading() {
                 document.getElementById('closeModal').click();
                 document.getElementById('loading').style.display = 'block';
+            },
+            showAlertAndRedirect() {
+                window.scrollTo(0,0);
+                document.getElementById('edit-alert').classList.remove('d-none');
+                setTimeout(() => {
+                    window.location.href = '/requests';
+                }, 2000)
             }
         },
         props: {

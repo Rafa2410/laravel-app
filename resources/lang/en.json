@@ -107,5 +107,17 @@
     "Request": "Request",
     "Request approved": "Request approved",
     "Date/Hour": "Date/Hour",
-    "Details": "Details"
+    "Details": "Details",
+    "This action is irreversible.": "This action is irreversible.",
+    "Are you sure you want to delete the request": "Are you sure you want to delete the request ",
+    "from": "from",
+    "New catering request": "New catering request ",
+    "A new catering request has been created for": "A new catering request has been created for ",
+    "Catering request": "Catering request ",
+    "Catering request rejected": "Catering request rejected",
+    "The catering request has been rejected": "The catering request has been rejected",
+    "Catering request cancelled": "Catering request cancelled",
+    "The catering request has been cancelled": "The catering request has been cancelled",
+    "Request created successfully": "Request created successfully",
+    "Request edited successfully": "Request edited successfully"
 }

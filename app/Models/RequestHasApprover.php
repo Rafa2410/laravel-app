@@ -18,4 +18,11 @@ class RequestHasApprover extends Model
         'user_request_id',
         'user_id'
     ];
+
+    /**
+     * Get user data
+     */
+    public function getUser($id) {
+        return User::findOrFail($id);
+    }
 }

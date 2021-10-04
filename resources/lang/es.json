@@ -107,5 +107,17 @@
     "Request": "Petición",
     "Request approved": "Petición aprobada",
     "Date/Hour": "Fecha/Hora",
-    "Details": "Detalles"
+    "Details": "Detalles",
+    "This action is irreversible.": "Esta acción es irreversible.",
+    "Are you sure you want to delete the request": "¿Estás seguro de que quieres eliminar la solicitud ",
+    "from": "de",
+    "New catering request": "Nueva solicitud de catering ",
+    "A new catering request has been created for": "Se ha creado una nueva solicitud de catering para ",
+    "Catering request": "Solicitud de catering",
+    "Catering request rejected": "Solicitud de catering rechazada",
+    "The catering request has been rejected": "Se ha rechazado la solicitud de catering",
+    "Catering request cancelled": "Solicitud de catering cancelada",
+    "The catering request has been cancelled": "Se ha cancelado la solicitud de catering",
+    "Request created successfully": "Solicitud creada correctamente",
+    "Request edited successfully": "Solicitud editada correctamente"
 }

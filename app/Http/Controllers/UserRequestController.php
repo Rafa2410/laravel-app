@@ -20,6 +20,7 @@ use App\Models\RequestHasApprover;
 use DateTime;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\RequestApproved;
+use App\Mail\RequestSimpleTemplate;
 
 class UserRequestController extends Controller
 {
@@ -209,6 +210,10 @@ class UserRequestController extends Controller
                 'user_id' => $approver['id']
             ]);
         }
+
+        if ($status->name === 'Pending') {
+            $this->sendMail($status->name, UserRequest::find($userRequest->id));
+        }
     }
 
     /**
@@ -325,8 +330,50 @@ class UserRequestController extends Controller
 
     function sendMail(String $status, UserRequest $userRequest)
     {
-        Mail::to('rafael@empireser.com') 
-            ->send(new RequestApproved($userRequest, __('Request approved')));
+        switch ($status) {
+            case 'Pending':
+                $approvers = RequestHasApprover::where('user_request_id', $userRequest->id)->get();
+                $approversEmails = [];
+                foreach ($approvers as $approver) {
+                    array_push($approversEmails, $approver->getUser($approver->user_id)->email);
+                }
+                Mail::to($approversEmails) 
+                    ->send(new RequestSimpleTemplate(
+                        $userRequest,
+                        __('New catering request')." (".$userRequest->getCompany($userRequest->company_id)->name.")",
+                        __('A new catering request has been created for').$userRequest->getCompany($userRequest->company_id)->name."."
+                    ));
+                break;
+            case 'Rejected':
+                Mail::to($userRequest->getUser($userRequest->user_id)->email)
+                    ->send(new RequestSimpleTemplate(
+                        $userRequest,
+                        __('Catering request rejected'),
+                        __('The catering request has been rejected')
+                    ));
+                break;
+            case 'Approved':
+                $emails = [];
+                array_push($emails, $userRequest->getUser($userRequest->user_id)->email);
+                array_push($emails, 'cocina@cocinaficosa.com');
+                Mail::to($emails) 
+                    ->send(new RequestApproved(
+                        $userRequest,
+                        __('Catering request')
+                    ));
+                break;
+            case 'Cancelled':
+                $emails = [];
+                array_push($emails, $userRequest->getUser($userRequest->user_id)->email);
+                array_push($emails, 'cocina@cocinaficosa.com');
+                Mail::to($emails) 
+                    ->send(new RequestSimpleTemplate(
+                        $userRequest,
+                        __('Catering request cancelled'),
+                        __('The catering request has been cancelled')
+                    ));
+                break;
+        }
     }
 
     /**
