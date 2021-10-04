@@ -18,6 +18,8 @@ use App\Models\ServiceType;
 use App\Models\RequestHasService;
 use App\Models\RequestHasApprover;
 use DateTime;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\RequestApproved;
 
 class UserRequestController extends Controller
 {
@@ -215,9 +217,10 @@ class UserRequestController extends Controller
      * @param  \App\Models\UserRequest  $userRequest
      * @return \Illuminate\Http\Response
      */
-    public function show(UserRequest $userRequest)
+    public function show(UserRequest $userRequest, $id)
     {
-        //
+        $request = UserRequest::find($id);
+        return view('requests.show', compact('request'));
     }
 
     /**
@@ -313,9 +316,17 @@ class UserRequestController extends Controller
         $query = [
             'status_id' => $status->id,
         ];
-
+        
         $userRequest = UserRequest::find($id);
         $userRequest->update($query);
+
+        $this->sendMail($status->name, $userRequest);
+    }
+
+    function sendMail(String $status, UserRequest $userRequest)
+    {
+        Mail::to('rafael@empireser.com') 
+            ->send(new RequestApproved($userRequest, __('Request approved')));
     }
 
     /**

@@ -1,5 +1,8 @@
 <template>
     <div class="container">
+        <div id="loading" style="display: none;">
+            <img id="loading-image" src="https://c.tenor.com/I6kN-6X7nhAAAAAj/loading-buffering.gif" alt="Loading..." />
+        </div>
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <form action="#" method="POST">
@@ -194,7 +197,7 @@
                             <p v-else>{{ __('You are going to approve the request, do you want to continue?') }}</p>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('No') }}</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeModal">{{ __('No') }}</button>
                             <button type="button" class="btn btn-primary" @click="updateRequest($event)">{{ __('Yes') }}</button>
                         </div>
                     </div>
@@ -296,6 +299,7 @@
             },
             updateRequest(e) {
                 this.requestObj.type = this.gonna;
+                this.hideModalAndShowLoading();
                 axios.put(`/state/request/${this.requestId}`, JSON.stringify(this.requestObj), {
                     headers: {
                         'Content-Type': 'application/json',
@@ -324,6 +328,10 @@
                     this.end_date = this.end.split(' ')[0];
                     this.end_time = this.end.split(' ')[1].replace(':00', '');
                 }
+            },
+            hideModalAndShowLoading() {
+                document.getElementById('closeModal').click();
+                document.getElementById('loading').style.display = 'block';
             }
         },
         props: {

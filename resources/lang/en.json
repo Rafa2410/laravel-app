@@ -103,5 +103,9 @@
     "Reject": "Reject",
     "Approved": "Approved",
     "Rejected": "Rejected",
-    "Date": "Date"
+    "Date": "Date",
+    "Request": "Request",
+    "Request approved": "Request approved",
+    "Date/Hour": "Date/Hour",
+    "Details": "Details"
 }

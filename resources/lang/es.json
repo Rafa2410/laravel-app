@@ -103,5 +103,9 @@
     "Reject": "Rechazar",
     "Approved": "Aprobada",
     "Rejected": "Rechazada",
-    "Date": "Fecha"
+    "Date": "Fecha",
+    "Request": "Petición",
+    "Request approved": "Petición aprobada",
+    "Date/Hour": "Fecha/Hora",
+    "Details": "Detalles"
 }

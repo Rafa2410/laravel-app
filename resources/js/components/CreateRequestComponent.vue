@@ -1,5 +1,8 @@
 <template>
     <div class="container">
+        <div id="loading" style="display: none;">
+            <img id="loading-image" src="https://c.tenor.com/I6kN-6X7nhAAAAAj/loading-buffering.gif" alt="Loading..." />
+        </div>
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <form action="#" method="POST">
@@ -286,6 +289,7 @@
                 this.mountRequestObject();
                 if (this.checkForm()) {
                     this.requestObj.type = 'Draft';
+                    document.getElementById('loading').style.display = 'block';
                     axios.post(this.store, JSON.stringify(this.requestObj), {
                         headers: {
                             'Content-Type': 'application/json',
@@ -302,6 +306,7 @@
                 this.mountRequestObject();
                 if (this.checkForm()) {
                     this.requestObj.type = 'Pending';
+                    document.getElementById('loading').style.display = 'block';
                     axios.post(this.store, JSON.stringify(this.requestObj), {
                         headers: {
                             'Content-Type': 'application/json',

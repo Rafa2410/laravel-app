@@ -1,5 +1,8 @@
 <template>
     <div class="container">
+        <div id="loading" style="display: none;">
+            <img id="loading-image" src="https://c.tenor.com/I6kN-6X7nhAAAAAj/loading-buffering.gif" alt="Loading..." />
+        </div>
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <form action="#" method="POST">
@@ -202,7 +205,7 @@
                             {{ __('You are going to cancel the request, do you want to continue?') }}
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('No') }}</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeModal">{{ __('No') }}</button>
                             <button type="button" class="btn btn-danger" @click="cancelRequest($event)">{{ __('Yes') }}</button>
                         </div>
                     </div>
@@ -307,6 +310,7 @@
                 this.mountRequestObject();
                 if (this.checkForm()) {
                     this.requestObj.type = 'Draft';
+                    this.hideModalAndShowLoading();
                     axios.put(this.update, JSON.stringify(this.requestObj), {
                         headers: {
                             'Content-Type': 'application/json',
@@ -323,6 +327,7 @@
                 this.mountRequestObject();
                 if (this.checkForm()) {
                     this.requestObj.type = 'Pending';
+                    this.hideModalAndShowLoading();
                     axios.put(this.update, JSON.stringify(this.requestObj), {
                         headers: {
                             'Content-Type': 'application/json',
@@ -337,6 +342,7 @@
             },
             cancelRequest(e) {
                 this.requestObj.type = 'Cancelled';
+                this.hideModalAndShowLoading();
                 axios.put(`/state/request/${this.requestId}`, JSON.stringify(this.requestObj), {
                     headers: {
                         'Content-Type': 'application/json',
@@ -446,6 +452,10 @@
                 this.room = '0';
                 this.getCostCenter();
                 this.getRooms();
+            },
+            hideModalAndShowLoading() {
+                document.getElementById('closeModal').click();
+                document.getElementById('loading').style.display = 'block';
             }
         },
         props: {

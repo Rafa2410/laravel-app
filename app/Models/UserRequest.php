@@ -180,9 +180,9 @@ class UserRequest extends Model
         $i = 0;
         foreach ($servicesQuery as $service) {
             if(++$i < $numItems) {
-                $services = $services . $service->name . ', ';
+                $services = $services . __($service->name) . ', ';
             } else {
-                $services = $services . $service->name;
+                $services = $services . __($service->name);
             }
         }
         return $services;

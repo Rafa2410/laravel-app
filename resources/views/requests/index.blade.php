@@ -45,7 +45,7 @@
                 </tr>
             @else
                 @foreach ($data as $key => $req)
-                    <tr class="{{ $req->getStatus($req->status_id)->name !== 'Draft' ? 'managed' : '' }}">
+                    <tr class="{{ $req->getStatus($req->status_id)->name !== 'Draft' && $req->getStatus($req->status_id)->name !== 'Pending' ? 'managed' : '' }}">
                         <td>{{ $req->getCompany($req->company_id)->name }}</td>
                         <td>{{ $req->request_num }}</td>
                         <td>{{ $req->getUser($req->user_id)->name }}</td>
@@ -54,19 +54,19 @@
                         <td>{{ $req->start_date }}</td>
                         <td class="truncate">{{ $req->getServices($req->id) }}</td>
                         <td style="max-width: 200px;">
-                        @can('request-edit')
-                            @if ($req->getStatus($req->status_id)->name === 'Draft' && !@Auth::user()->hasRole('Approver'))
-                                <a class="btn btn-outline-primary" href="{{ route('requests.edit',$req->id) }}">{{ __('Edit') }}</a>
-                            @elseif ($req->getStatus($req->status_id)->name === 'Pending' && @Auth::user()->hasRole('Approver'))
-                                <a class="btn btn-outline-primary" href="{{ route('manage-request',$req->id) }}">{{ __('Manage') }}</a>
-                            @endif
-                        @endcan
-                        @can('request-delete')
-                            {!! Form::open(['method' => 'DELETE','route' => ['requests.destroy', $req->id],'style'=>'display:inline']) !!}
-                                {!! Form::submit(__('Delete'), ['class' => 'btn btn-outline-danger']) !!}
-                            {!! Form::close() !!}
-                        @endcan
-                    </td>
+                            @can('request-edit')
+                                @if ($req->getStatus($req->status_id)->name === 'Draft' && !@Auth::user()->hasRole('Approver'))
+                                    <a class="btn btn-outline-primary" href="{{ route('requests.edit',$req->id) }}">{{ __('Edit') }}</a>
+                                @elseif (@Auth::user()->hasRole('Approver'))
+                                    <a class="btn btn-outline-primary" href="{{ route('manage-request',$req->id) }}">{{ __('Manage') }}</a>
+                                @endif
+                            @endcan
+                            @can('request-delete')
+                                {!! Form::open(['method' => 'DELETE','route' => ['requests.destroy', $req->id],'style'=>'display:inline']) !!}
+                                    {!! Form::submit(__('Delete'), ['class' => 'btn btn-outline-danger']) !!}
+                                {!! Form::close() !!}
+                            @endcan
+                        </td>
                     </tr>
                 @endforeach
             @endif
