@@ -40,7 +40,8 @@ class UserRequestController extends Controller
      */
     public function index(Request $request)
     {
-        if (@Auth::user()->hasRole('Admin')) {
+        $user = User::find(@Auth::user()->id);
+        if ($user->hasRole('Admin')) {
             $data = UserRequest::orderBy('id','DESC')->paginate()->all();
         } else {
             $data = UserRequest::orderBy('id','DESC')->paginate()->where('user_id', Auth::id());
@@ -275,6 +276,24 @@ class UserRequestController extends Controller
 
         $request = UserRequest::find($inputs['id']);
         $request->update($query);
+
+        RequestHasService::where('user_request_id', $request->id)->delete();
+
+        foreach ($inputs['services'] as $service) {
+            RequestHasService::create([
+                'user_request_id' => $request->id,
+                'service_types_id' => $service
+            ]);
+        }
+
+        RequestHasApprover::where('user_request_id', $request->id)->delete();
+
+        foreach ($inputs['approvers'] as $approver) {
+            RequestHasApprover::create([
+                'user_request_id' => $request->id,
+                'user_id' => $approver['id']
+            ]);
+        }
     }
 
     /**

@@ -25,7 +25,7 @@
                     <div class="form-group">
                         <div class="row">
                             <label for="plant" style="width: 100%;">{{ __('Plant') }} *</label>
-                            <select class='form-control col-lg-11' v-model='plant' @change='center="0";room="0"' name="plant" id="plant" required>
+                            <select class='form-control col-lg-11' v-model='plant' @change='resetPlantRelations()' name="plant" id="plant" required>
                                 <option value='0'>{{ __('Select Plant') }}</option>
                                 <option v-for='data in plants' :value='data.id' :key="data.id">{{ data.name }}</option>
                             </select>
@@ -269,7 +269,6 @@
                 this.mountRequestObject();
                 if (this.checkForm()) {
                     this.requestObj.type = 'Save';
-                    console.log('Envio', this.requestObj, this.errors);
                     axios.put(this.update, JSON.stringify(this.requestObj), {
                         headers: {
                             'Content-Type': 'application/json',
@@ -379,9 +378,20 @@
                 }
             },
             resetRelations() {
-                this.plant = 0;
-                this.center = 0;
-                this.room = 0;
+                this.plant = '0';
+                this.plants = [];
+                this.getPlants();
+                this.costCenters = [];
+                this.center = '0';
+                this.room = '0';
+                this.rooms = [];
+                this.getApprovers();
+            },
+            resetPlantRelations() {
+                this.center ='0';
+                this.room = '0';
+                this.getCostCenter();
+                this.getRooms();
             }
         },
         props: {

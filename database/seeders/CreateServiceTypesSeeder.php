@@ -16,7 +16,7 @@ class CreateServiceTypesSeeder extends Seeder
     {
         $types = [
             'Breakfast',
-            'Launcheons and Barbecues',
+            'Luncheons and Barbecues',
             'Coffees',
             'Foods'
         ];
